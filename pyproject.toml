@@ -1,0 +1,21 @@
+[project]
+name = "collectorshub"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "django>=5.2.3",
+    "django-cotton>=2.1.2",
+    "django-extensions>=4.1",
+    "django-unfold>=0.60.0",
+    "django-vite>=3.1.0",
+    "pillow>=11.2.1",
+    "python-decouple>=3.8",
+]
+
+[dependency-groups]
+prod = [
+    "uvicorn>=0.34.3",
+    "whitenoise>=6.9.0",
+]

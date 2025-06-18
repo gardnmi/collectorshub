@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}All Collectibles{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-center">Available Collectibles</h1>
+    <a href="{% url 'collectible_create' %}" class="btn btn-primary">Add New</a>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for collectible in collectibles %}
+    <div class="card bg-base-100 shadow-xl image-full">
+        <figure>
+            {% if collectible.image %}
+                <img src="{{ collectible.image.url }}" alt="{{ collectible.name }}" class="object-cover w-full h-48"/>
+            {% else %}
+                <img src="https://via.placeholder.com/400x300.png?text=No+Image" alt="No Image" class="object-cover w-full h-48"/>
+            {% endif %}
+        </figure>
+        <div class="card-body">
+            <h2 class="card-title text-white">{{ collectible.name }}</h2>
+            <p class="text-gray-200">Price: <span class="font-bold text-lg text-white">${{ collectible.price }}</span></p>
+            <p class="text-gray-300">Condition: {{ collectible.get_condition_display }}</p>
+            <div class="card-actions justify-end">
+                <a href="{% url 'collectible_detail' collectible.pk %}" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-span-full alert alert-info text-center">
+        No collectibles listed yet. Be the first to list one!
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.manifest
+*.spec
+
+# Django
+*.log
+*.pot
+*.pyc
+db.sqlite3
+media/
+staticfiles/
+.env
+.env.*
+
+# VS Code
+.vscode/
+
+# Byte-compiled / optimized / DLL files
+*.pyd
+
+# Pipenv
+Pipfile.lock
+
+# Poetry
+poetry.lock
+
+# Virtualenv
+venv/
+env/
+ENV/
+.venv/
+
+# Migrations (optional - comment out if you want to keep these tracked)
+**/migrations/*.py
+**/migrations/*.pyc
+!*/migrations/__init__.py
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Build directories
+build/
+dist/
+*.tgz
+
+# Frontend (React/Vue/Other JS frameworks)
+*.log
+.cache/
+.next/
+.nuxt/
+out/
+coverage/
+public/build/
+frontend/build/
+frontend/dist/
+
+# OS-generated files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,49 @@
+{% load django_vite %}
+
+<!-- templates/_base.html -->
+<!DOCTYPE html>
+<html lang="en" data-theme="DaisyUI">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CollectiblesHub</title>
+    {% vite_hmr_client %}
+
+    {% vite_asset 'static/js/main.js' %}
+  </head>
+  <body class="bg-base-200 min-h-screen flex flex-col">
+    {% include 'nav.html' %}
+    <div class="container mx-auto p-4 flex-grow">
+      <!-- <div class="container mx-auto px-4 md:px-6 lg:px-8"> -->
+      {% block content %}
+
+      {% endblock %}
+    </div>
+
+    <div class="container mx-auto p-4 flex-grow">
+      {% if messages %}
+        <div class="toast toast-end">
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}
+                alert-success
+              {% elif message.tags == 'error' %}
+                alert-error
+              {% elif message.tags == 'warning' %}
+                alert-warning
+              {% else %}
+                alert-info
+              {% endif %}">
+              <span>{{ message }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    <footer class="footer footer-center p-4 bg-base-300 text-base-content mt-8">
+        <aside>
+            <p>Copyright © 2025 - All right reserved by Your Company Name</p>
+        </aside>
+    </footer>    
+  </body>
+</html>

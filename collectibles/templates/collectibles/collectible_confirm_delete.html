@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirm Delete{% endblock %}
+
+{% block content %}
+<div class="card bg-base-100 shadow-xl max-w-md mx-auto">
+    <div class="card-body text-center">
+        <h2 class="card-title text-2xl mb-4 block">Confirm Deletion</h2>
+        <p class="text-lg mb-6">Are you sure you want to delete "{{ collectible.name }}"?</p>
+
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <div class="flex justify-center gap-4">
+                <button type="submit" class="btn btn-error">Yes, Delete</button>
+                <a href="{% url 'collectible_detail' collectible.pk %}" class="btn btn-ghost">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
