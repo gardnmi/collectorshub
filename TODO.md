@@ -15,4 +15,7 @@ project_setup_demo:
     Part2: https://www.youtube.com/watch?v=RkSnBpPh12o
 
 htmx_demo: https://www.youtube.com/watch?v=akd7u69k27k&list=PL-2EBeDYMIbRByZ8GXhcnQSuv2dog4JxY&index=38
+
 interactive_search_demo: https://www.youtube.com/watch?v=4lItzpcZTk4&list=PL-2EBeDYMIbRByZ8GXhcnQSuv2dog4JxY&index=40
+
+hyperscript: https://www.youtube.com/watch?v=4lItzpcZTk4

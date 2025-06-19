@@ -1,6 +1,8 @@
 # Assuming users can own/sell collectibles
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_migrate
+from django.dispatch import receiver
 
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -11,7 +13,6 @@ class Category(models.Model):
     
     class Meta:
         verbose_name_plural = "Categories"
-
 
 class Collectible(models.Model):
     owner = models.ForeignKey(
@@ -42,3 +43,29 @@ class Collectible(models.Model):
 
     class Meta:
         ordering = ['-updated_at']
+
+
+# Add default categories when the database is initialized
+def initialize_default_categories():
+    default_categories = [
+        {"name": "antiques", "display_name": "Antiques"},
+        {"name": "books", "display_name": "Books"},
+        {"name": "electronics", "display_name": "Electronics"},
+        {"name": "furniture", "display_name": "Furniture"},
+        {"name": "clothing", "display_name": "Clothing"},
+        {"name": "toys", "display_name": "Toys"},
+        {"name": "art", "display_name": "Art"},
+        {"name": "sports", "display_name": "Sports Equipment"},
+        {"name": "tools", "display_name": "Tools"},
+        {"name": "miscellaneous", "display_name": "Miscellaneous"},
+    ]
+    for category in default_categories:
+        Category.objects.get_or_create(name=category["name"], defaults={"display_name": category["display_name"]})
+
+# Hook into Django's post_migrate signal to initialize categories after migrations
+@receiver(post_migrate)
+def create_default_categories(sender, **kwargs):
+    if sender.name == "collectibles":
+        initialize_default_categories()
+
+

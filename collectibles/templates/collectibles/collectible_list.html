@@ -3,30 +3,62 @@
 {% block title %}All Collectibles{% endblock %}
 
 {% block content %}
+<script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
+
 <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold text-center">Available Collectibles</h1>
+    <h1 class="text-3xl font-bold"></h1>
     <a href="{% url 'collectible_create' %}" class="btn btn-primary">Add New</a>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="w-100 mb-6 font-sans">
+    <label class="input input-bordered flex items-center gap-2 w-full rounded-lg">
+        <input
+            type="text"
+            class="grow" 
+            placeholder="Search by name, description, or category"
+            _="on input
+                 set value to my value.toLowerCase()
+                 show <.card/> in #card-container
+                   when its textContent.toLowerCase() contains my value.toLowerCase()"
+        />
+        <svg class="h-4 w-4 opacity-70" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
+        </svg>
+    </label>
+</div>
+
+<div id="card-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for collectible in collectibles %}
-    <div class="card bg-base-100 shadow-xl image-full">
+        <div class="card bg-base-100 shadow-sm"> {# Removed w-96 here #}
         <figure>
             {% if collectible.image %}
-                <img src="{{ collectible.image.url }}" alt="{{ collectible.name }}" class="object-cover w-full h-48"/>
+            <img src="{{ collectible.image.url }}" alt="{{ collectible.name }}" />
             {% else %}
-                <img src="https://via.placeholder.com/400x300.png?text=No+Image" alt="No Image" class="object-cover w-full h-48"/>
+            <div class="bg-base-200 w-full h-48 flex items-center justify-center text-base-content/50">No Image</div>
             {% endif %}
         </figure>
         <div class="card-body">
-            <h2 class="card-title text-white">{{ collectible.name }}</h2>
-            <p class="text-gray-200">Price: <span class="font-bold text-lg text-white">${{ collectible.price }}</span></p>
-            <p class="text-gray-300">Condition: {{ collectible.get_condition_display }}</p>
-            <div class="card-actions justify-end">
-                <a href="{% url 'collectible_detail' collectible.pk %}" class="btn btn-primary">View Details</a>
+            <h2 class="card-title">
+            {{ collectible.name }}
+            {% if collectible.is_sold %}
+                <div class="badge badge-secondary">SOLD</div>
+            {% endif %}
+            </h2>
+            <p class="text-xl font-bold">${{ collectible.price }}</p>
+            <p class="text-sm">Condition: {{ collectible.get_condition_display }}</p>
+            {% if collectible.description %}
+            <p class="line-clamp-2">{{ collectible.description }}</p>
+            {% endif %}
+            <div class="card-actions justify-end mt-2">
+            {% for category in collectible.categories.all %}
+                <div class="badge badge-outline">{{ category.display_name }}</div>
+            {% endfor %}
+            </div>
+            <div class="card-actions justify-end mt-3">
+            <a href="{% url 'collectible_detail' collectible.id %}" class="btn btn-primary btn-sm">View Details</a>
             </div>
         </div>
-    </div>
+        </div>
     {% empty %}
     <div class="col-span-full alert alert-info text-center">
         No collectibles listed yet. Be the first to list one!

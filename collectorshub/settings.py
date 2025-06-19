@@ -45,6 +45,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    
+    # 3rd Party apps
+    "django_htmx.middleware.HtmxMiddleware",
 ]
 
 ROOT_URLCONF = "collectorshub.urls"

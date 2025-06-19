@@ -1,37 +1,94 @@
+{# collectibles/templates/collectibles/collectible_form.html #}
 {% extends 'base.html' %}
 
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<div class="card bg-base-100 shadow-xl max-w-lg mx-auto">
-    <div class="card-body">
-        <h2 class="card-title text-3xl mb-6 text-center">{{ title }}</h2>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-
-            {% for field in form %}
-                <div class="form-control mb-4">
-                    <label class="label">
-                        <span class="label-text">{{ field.label }}</span>
-                    </label>
-                    {{ field }}
-                    {% if field.help_text %}
-                        <label class="label">
-                            <span class="label-text-alt text-gray-500">{{ field.help_text }}</span>
-                        </label>
-                    {% endif %}
-                    {% for error in field.errors %}
-                        <label class="label">
-                            <span class="label-text-alt text-error">{{ error }}</span>
-                        </label>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-
-            <div class="form-control mt-6">
-                <button type="submit" class="btn btn-primary">{{ title }}</button>
-            </div>
-        </form>
+<div class="container mx-auto px-4 mb-4">
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold"></h1>
+        {% if form.instance.pk %}
+            <a href="{% url 'collectible_detail' form.instance.pk %}" class="btn btn-primary"">
+                Back to Detail
+            </a>
+        {% endif %}
     </div>
 </div>
+
+<div class="card lg:card-side bg-base-100 shadow-xl max-w-4xl mx-auto">
+    <div class="card-body relative">
+        {# Back to Detail button (top right) #}
+
+        <h2 class="card-title text-3xl mb-6 text-center">{{ title }}</h2>
+        {# The form container that HTMX will replace #}
+        <div id="collectibleFormContainer">
+            {# This div exists to be the hx-target if you're creating a new collectible
+               and want the *initial* form to contain the ID #}
+            <form method="post" enctype="multipart/form-data" id="collectibleForm">
+                {% csrf_token %}
+
+                {# Hidden input for PK, if it's an update form #}
+                {% if form.instance.pk %}
+                    <input type="hidden" name="pk" value="{{ form.instance.pk }}">
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="form-control mb-4">
+                        <label class="label">
+                            <span class="label-text">{{ field.label }}</span>
+                        </label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <label class="label">
+                                <span class="label-text-alt text-gray-500">{{ field.help_text }}</span>
+                            </label>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <label class="label">
+                                <span class="label-text-alt text-error">{{ error }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <div class="form-control mt-6">
+                    <button type="submit" class="btn btn-primary w-full mb-3">{{ title }}</button>
+
+                    {% comment %} <button
+                        type="button"
+                        id="improveWithAIButton"
+                        class="btn btn-secondary w-full"
+                        hx-post="{% url 'improve_with_ai' %}"
+                        hx-trigger="click"
+                        hx-target="#collectibleForm" {# Target the form itself #}
+                        hx-swap="outerHTML" {# Replace the entire form with the updated one #}
+                        {# Include all necessary fields #}
+                        hx-include="[name='name'], [name='description'], [name='price'], [name='condition'], [name='categories'], [name='pk']"
+                        hx-indicator="#aiSpinner"
+                    >
+                        <span id="aiButtonText">Improve with AI</span>
+                        <span id="aiSpinner" class="loading loading-spinner hx-indicator hidden"></span>
+                    </button> {% endcomment %}
+                </div>
+            </form>
+        </div> {# End collectibleFormContainer #}
+    </div>
+</div>
+
+{% comment %} <script>
+    document.body.addEventListener('showMessage', function(evt) {
+        const message = evt.detail.value;
+        // Implement your DaisyUI toast here
+        // Example: const toastContainer = document.querySelector('.toast-end');
+        // if (toastContainer) {
+        //     const alertDiv = document.createElement('div');
+        //     alertDiv.className = 'alert alert-info'; // Adjust alert-type based on success/error
+        //     alertDiv.innerHTML = `<span>${message}</span>`;
+        //     toastContainer.appendChild(alertDiv);
+        //     setTimeout(() => alertDiv.remove(), 5000); // Remove after 5 seconds
+        // } else {
+            alert(message); // Fallback
+        // }
+    });
+</script> {% endcomment %}
 {% endblock %}

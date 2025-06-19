@@ -5,12 +5,12 @@
 {% block content %}
 <div class="container mx-auto px-4 mb-4">
     <div class="flex justify-between items-center">
-        <h1 class="text-2xl font-bold">Collectible Details</h1>
+        <h1 class="text-2xl font-bold"></h1>
         <a href="{% url 'collectible_list' %}" class="btn btn-primary">Back to List</a>
     </div>
 </div>
 
-<div class="card lg:card-side bg-base-100 shadow-xl max-w-4xl mx-auto">
+<div id="collectible-content" class="card lg:card-side bg-base-100 shadow-xl max-w-4xl mx-auto">
     <figure class="lg:w-1/2">
         {% if collectible.image %}
             <img src="{{ collectible.image.url }}" alt="{{ collectible.name }}" class="object-cover w-full h-96 lg:h-full rounded-l-box"/>
@@ -27,12 +27,28 @@
 
         <div class="card-actions justify-end mt-auto">
             {% if user.is_authenticated and collectible.owner == user %}
+                <button 
+                    class="btn btn-accent"
+                    hx-get="{% url 'enhance_with_ai' collectible.pk %}"
+                    hx-target="#collectible-content"
+                    hx-swap="outerHTML"
+                    hx-indicator="#loading-indicator">
+                    <span>✨ Enhance with AI</span>
+                </button>            
                 <a href="{% url 'collectible_update' collectible.pk %}" class="btn btn-warning">Edit</a>
                 <a href="{% url 'collectible_delete' collectible.pk %}" class="btn btn-error">Delete</a>
             {% else %}
                 <button class="btn btn-success" disabled>Purchase (Feature Coming Soon!)</button>
             {% endif %}
         </div>
+    </div>
+</div>
+
+<!-- Add a loading indicator -->
+<div id="loading-indicator" class="htmx-indicator fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+    <div class="text-white text-center">
+        <div class="loading loading-spinner loading-lg"></div>
+        <p class="mt-2">Enhancing with AI...</p>
     </div>
 </div>
 {% endblock %}

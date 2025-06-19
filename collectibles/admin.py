@@ -18,6 +18,7 @@ class UserAdmin(BaseUserAdmin, ModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
     change_password_form = AdminPasswordChangeForm
+    # list_display = [field.name for field in User._meta.fields]
 
 
 @admin.register(Group)
@@ -25,10 +26,17 @@ class GroupAdmin(BaseGroupAdmin, ModelAdmin):
     pass
 
 @admin.register(Collectible)
-class Collectiblesdmin(ModelAdmin):
-    pass
+class CollectibleAdmin(admin.ModelAdmin):
+    list_display = ('name', 'owner', 'price', 'condition', 'is_sold', 'get_categories', 'created_at')
+    list_filter = ('condition', 'is_sold', 'categories')
+    search_fields = ('name', 'description', 'owner__username')
+    
+    def get_categories(self, obj):
+        return ", ".join([category.display_name for category in obj.categories.all()])
+    
+    get_categories.short_description = 'Categories' # type: ignore
 
+    
 @admin.register(Category)
 class CategoryAdmin(ModelAdmin):
-    pass
-    
+    list_display = ('name', 'display_name')

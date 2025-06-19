@@ -1,0 +1,42 @@
+<div id="collectible-content" class="card bg-base-100 shadow-xl max-w-4xl mx-auto">
+    <div class="card-body">
+        <h2 class="card-title text-3xl mb-4">AI Enhancement Results</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+            <!-- Original Content Column -->
+            <div class="border border-base-300 rounded-lg p-4">
+                <h3 class="text-xl font-bold mb-3">Original Content</h3>
+                <h4 class="font-bold">Name:</h4>
+                <p class="mb-3">{{ original.name }}</p>
+                
+                <h4 class="font-bold">Description:</h4>
+                <p class="mb-3">{{ original.description|default:"No description provided." }}</p>
+            </div>
+            
+            <!-- Enhanced Content Column -->
+            <div class="border border-accent rounded-lg p-4">
+                <h3 class="text-xl font-bold text-accent mb-3">AI Enhanced Content</h3>
+                <h4 class="font-bold">Name:</h4>
+                <p class="mb-3">{{ enhanced.name }}</p>
+                
+                <h4 class="font-bold">Description:</h4>
+                <p class="mb-3">{{ enhanced.description }}</p>
+            </div>
+        </div>
+        
+        <div class="card-actions justify-end space-x-2">
+            <form hx-post="{% url 'save_enhanced' collectible.pk %}" hx-target="body">
+                {% csrf_token %}
+                <input type="hidden" name="name" value="{{ enhanced.name }}">
+                <input type="hidden" name="description" value="{{ enhanced.description }}">
+                <button class="btn btn-success" type="submit">
+                    Apply Changes
+                </button>
+            </form>
+            
+            <a href="{% url 'collectible_detail' collectible.pk %}" class="btn btn-ghost">
+                Cancel
+            </a>
+        </div>
+    </div>
+</div>
