@@ -1,2 +1,53 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* Custom CSS to handle button content swap */
+
+/* The button itself needs to be relative to contain absolute children */
+.btn.relative {
+    position: relative;
+}
+
+/* Ensure original content is visible by default */
+.normal-content {
+    opacity: 1;
+    transition: opacity 200ms ease-in;
+    display: inline-flex; /* or block, depending on button content */
+    align-items: center; /* For vertical alignment */
+    justify-content: center; /* For horizontal alignment if content is smaller than button */
+    width: 100%; /* Important: Make it take full width of button */
+    height: 100%; /* Important: Make it take full height of button */
+}
+
+/* The loading content should be absolutely positioned over the button */
+.loading-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex; /* Always use flex for the spinner and text */
+    align-items: center;
+    justify-content: center;
+    opacity: 0; /* Hidden by default */
+    pointer-events: none; /* Crucial: Allows clicks to pass through when hidden */
+    transition: opacity 200ms ease-in;
+    /* When hidden, prevent it from taking up space or interacting */
+    visibility: hidden;
+}
+
+
+/* HTMX hooks */
+
+/* When htmx-request is active on the button (or parent) */
+.htmx-request .normal-content {
+    opacity: 0; /* Fade out normal content */
+    pointer-events: none; /* Disable interactions on normal content */
+    visibility: hidden; /* Hide completely after fade */
+}
+
+.htmx-request .loading-content {
+    opacity: 1; /* Fade in loading content */
+    pointer-events: auto; /* Enable interactions (if any) on loading content */
+    visibility: visible; /* Make visible */
+}

@@ -26,15 +26,22 @@
         <p class="text-sm text-gray-500 mb-4">Listed by: {{ collectible.owner.username }} on {{ collectible.created_at|date:"M d, Y" }}</p>
 
         <div class="card-actions justify-end mt-auto">
-            {% if user.is_authenticated and collectible.owner == user %}
-                <button 
-                    class="btn btn-accent"
+            {% if user.is_authenticated and collectible.owner == user %}      
+                <button
+                    class="btn btn-accent relative overflow-hidden" {# Added relative and overflow-hidden for better control #}
                     hx-get="{% url 'enhance_with_ai' collectible.pk %}"
                     hx-target="#collectible-content"
                     hx-swap="outerHTML"
-                    hx-indicator="#loading-indicator">
-                    <span>✨ Enhance with AI</span>
-                </button>            
+                    {# No hx-indicator needed here. We'll toggle direct classes. #}
+                >
+                    {# Normal content - initially visible #}
+                    <span class="normal-content">✨ Enhance with AI</span>
+
+                    {# Loading content - initially hidden. Position absolutely to not affect normal flow. #}
+                    <span class="loading-content absolute inset-0 flex items-center justify-center h-full w-full opacity-0 pointer-events-none transition-opacity duration-200">
+                        <span class="loading loading-spinner loading-sm mr-2"></span> Thinking...
+                    </span>
+                </button>           
                 <a href="{% url 'collectible_update' collectible.pk %}" class="btn btn-warning">Edit</a>
                 <a href="{% url 'collectible_delete' collectible.pk %}" class="btn btn-error">Delete</a>
             {% else %}
@@ -44,11 +51,4 @@
     </div>
 </div>
 
-<!-- Add a loading indicator -->
-<div id="loading-indicator" class="htmx-indicator fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
-    <div class="text-white text-center">
-        <div class="loading loading-spinner loading-lg"></div>
-        <p class="mt-2">Enhancing with AI...</p>
-    </div>
-</div>
 {% endblock %}

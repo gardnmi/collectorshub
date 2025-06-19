@@ -3,15 +3,15 @@ import json
 import llm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
-from django.utils.datastructures import MultiValueDict
+from django.conf import settings
 
 from collectibles.forms import CollectibleForm
 
 from .models import Collectible
 
+OPENAI_API_KEY = getattr(settings, 'OPENAI_API_KEY') 
 
 # List all collectibles
 def collectible_list(request):
@@ -20,15 +20,11 @@ def collectible_list(request):
     return render(request, 'collectibles/collectible_list.html', {'collectibles': collectibles})
 
 # View a single collectible
-
-
 def collectible_detail(request, pk):
     collectible = get_object_or_404(Collectible, pk=pk)
     return render(request, 'collectibles/collectible_detail.html', {'collectible': collectible})
 
 # Create a new collectible
-
-
 # @login_required
 def collectible_create(request):
     if request.method == 'POST':
@@ -45,8 +41,6 @@ def collectible_create(request):
 
 # Update an existing collectible
 # @login_required
-
-
 def collectible_update(request, pk):
     # Ensure only owner can update
     collectible = get_object_or_404(Collectible, pk=pk, owner=request.user)
@@ -80,7 +74,7 @@ def enhance_with_ai(request, pk):
     # Mock AI enhancement (similar to improve_collectible_description_ai)
     try:
         # Create a mock response or call the LLM service
-        mock_response = True  # Set to False to use actual LLM
+        mock_response = False  # Set to False to use actual LLM
 
         if mock_response:
             # Mock improved response
@@ -90,44 +84,71 @@ def enhance_with_ai(request, pk):
             }
         else:
             # Here you would call the LLM service with a prompt
-            prompt = f"""
-            You are an expert e-commerce copywriter and market analyst specializing in collectible items.
-            Your task is to improve a collectible listing's name and description for an eBay-like marketplace.
-            You should also suggest a competitive and appealing price for the item.
+            prompt = """
+                You are an expert e-commerce copywriter and market analyst specializing in collectible items.
+                Your task is to improve a collectible listing's name and description for an eBay-like marketplace.
 
-            Focus on making the description more engaging, detailed, professional, and appealing to potential buyers.
-            Highlight key features and benefits, and use clear, concise language.
-            Consider the item's current details and condition when suggesting the price.
-            The suggested price should be a reasonable numerical value, suitable for an online marketplace.
+                Focus on making the description more engaging, detailed, professional, and appealing to potential buyers.
+                Highlight key features and benefits, and use clear, concise language.
 
-            Current Collectible Details:
-            Name: {collectible.name}
-            Description: {collectible.description}
-            Current Price: ${collectible.price}
-            Condition: {collectible.condition}
+                Please return the improved name, description, and a suggested price in JSON format with the keys 'name' and 'description'
 
-            Please return the improved name, description, and a suggested price in JSON format with the keys 'name', 'description', and 'price'. The price should be a number (float or integer).
-            Example format:
-            {{
-                "name": "Improved Name Here",
-                "description": "Improved, detailed description here.",
-                "price": 99.99
-            }}
-            """
-            try:
-                model = llm.get_model("gpt-3.5-turbo")  # Example model
-            except Exception as e:
-                print(f"Warning: Could not get specified LLM model. Falling back to default: {e}")
-                model = llm.get_default_model()
+                I will also provide an image of the collectible to help you improve the name and description.
 
-            llm_response = model.prompt(prompt) # type: ignore
-            llm_output_text = llm_response.text().strip() # type: ignore
+                Example format:
+                {
+                    "name": "Improved Name Here",
+                    "description": "Improved, detailed description here.",
+                }
+                """
+            
+            model = llm.get_model("gpt-4.1-nano")
 
-            if llm_output_text.startswith("```json") and llm_output_text.endswith("```"):
-                llm_output_text = llm_output_text[7:-3].strip()
-                
-            enhanced = json.loads(llm_output_text)
-        
+            llm_response = model.prompt(
+                prompt=prompt,
+                schema={
+                    "properties": {
+                        "name": {"title": "Name", "type": "string"},
+                        "description": {"title": "Description", "type": "string"},
+                    },
+                    "required": ["name", "description"],
+                    "title": "CollectibleItem",
+                    "type": "object"
+                },
+                attachments=[
+                    llm.Attachment(path=collectible.image.path)
+                ],
+                key=OPENAI_API_KEY
+            ).json()
+
+            # Example response structure from the LLM service            
+            # {
+            #     'content': (
+            #         '{"name":"Vintage Fujifilm X-T10 Mirrorless Camera with 18-55mm Lens",'
+            #         '"description":"C...lens, ready for your creative endeavors."}'
+            #     ),
+            #     'finish_reason': 'stop',
+            #     'usage': {
+            #         'completion_tokens': 125,
+            #         'prompt_tokens': 3823,
+            #         'total_tokens': 3948,
+            #         'completion_tokens_details': {...},
+            #         'prompt_tokens_details': {...}
+            #     },
+            #     'id': 'chatcmpl-BkEJxCVOi9xLfRsxZUqq7Vs85xmAR',
+            #     'object': 'chat.completion.chunk',
+            #     'model': 'gpt-4.1-nano-2025-04-14',
+            #     'created': 1750357837
+            # }
+
+            content = json.loads(llm_response["content"]) # type: ignore
+
+            enhanced = {
+                "name": content.get("name", collectible.name),
+                "description": content.get("description", collectible.description),
+            }
+
+
         # Pass the original and enhanced data to the template
         original = {
             "name": collectible.name,

@@ -19,3 +19,10 @@ htmx_demo: https://www.youtube.com/watch?v=akd7u69k27k&list=PL-2EBeDYMIbRByZ8GXh
 interactive_search_demo: https://www.youtube.com/watch?v=4lItzpcZTk4&list=PL-2EBeDYMIbRByZ8GXhcnQSuv2dog4JxY&index=40
 
 hyperscript: https://www.youtube.com/watch?v=4lItzpcZTk4
+
+# Actual TODOs
+- [ ] Add user authentication with Django Allauth
+- [ ] Add security to views
+- [ ] Create a hero section
+- [ ] Create a shopping cart app
+
