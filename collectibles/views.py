@@ -11,67 +11,86 @@ from collectibles.forms import CollectibleForm
 
 from .models import Collectible
 
-OPENAI_API_KEY = getattr(settings, 'OPENAI_API_KEY') 
+OPENAI_API_KEY = getattr(settings, "OPENAI_API_KEY")
+
 
 # List all collectibles
 def collectible_list(request):
-    collectibles = Collectible.objects.filter(
-        is_sold=False).order_by('-created_at')
-    return render(request, 'collectibles/collectible_list.html', {'collectibles': collectibles})
+    collectibles = Collectible.objects.filter(is_sold=False).order_by("-created_at")
+    return render(
+        request, "collectibles/collectible_list.html", {"collectibles": collectibles}
+    )
+
 
 # View a single collectible
 @login_required
 def collectible_detail(request, pk):
     collectible = get_object_or_404(Collectible, pk=pk)
-    return render(request, 'collectibles/collectible_detail.html', {'collectible': collectible})
+    return render(
+        request, "collectibles/collectible_detail.html", {"collectible": collectible}
+    )
+
 
 # Create a new collectible
 @login_required
 def collectible_create(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CollectibleForm(request.POST, request.FILES)
         if form.is_valid():
             collectible = form.save(commit=False)
             collectible.owner = request.user
             collectible.save()
-            messages.success(request, 'Collectible added successfully!')
-            return redirect('collectible_detail', pk=collectible.pk)
+            messages.success(request, "Collectible added successfully!")
+            return redirect("collectible_detail", pk=collectible.pk)
     else:
         form = CollectibleForm()
-    return render(request, 'collectibles/collectible_form.html', {'form': form, 'title': 'List New Collectible'})
+    return render(
+        request,
+        "collectibles/collectible_form.html",
+        {"form": form, "title": "List New Collectible"},
+    )
+
 
 # Update an existing collectible
 @login_required
 def collectible_update(request, pk):
     # Ensure only owner can update
     collectible = get_object_or_404(Collectible, pk=pk, owner=request.user)
-    if request.method == 'POST':
-        form = CollectibleForm(
-            request.POST, request.FILES, instance=collectible)
+    if request.method == "POST":
+        form = CollectibleForm(request.POST, request.FILES, instance=collectible)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Collectible updated successfully!')
-            return redirect('collectible_detail', pk=collectible.pk)
+            messages.success(request, "Collectible updated successfully!")
+            return redirect("collectible_detail", pk=collectible.pk)
     else:
         form = CollectibleForm(instance=collectible)
-    return render(request, 'collectibles/collectible_form.html', {'form': form, 'title': 'Update Collectible'})
+    return render(
+        request,
+        "collectibles/collectible_form.html",
+        {"form": form, "title": "Update Collectible"},
+    )
+
 
 @login_required
 def collectible_delete(request, pk):
     # Ensure only owner can delete
     collectible = get_object_or_404(Collectible, pk=pk, owner=request.user)
-    if request.method == 'POST':
+    if request.method == "POST":
         collectible.delete()
-        messages.success(request, 'Collectible deleted successfully!')
-        return redirect('collectible_list')
-    return render(request, 'collectibles/collectible_confirm_delete.html', {'collectible': collectible})
+        messages.success(request, "Collectible deleted successfully!")
+        return redirect("collectible_list")
+    return render(
+        request,
+        "collectibles/collectible_confirm_delete.html",
+        {"collectible": collectible},
+    )
 
 
 @login_required
 def enhance_with_ai(request, pk):
     # Ensure only owner can enhance
     collectible = get_object_or_404(Collectible, pk=pk, owner=request.user)
-    
+
     # Mock AI enhancement (similar to improve_collectible_description_ai)
     try:
         # Create a mock response or call the LLM service
@@ -102,7 +121,7 @@ def enhance_with_ai(request, pk):
                     "description": "Improved, detailed description here.",
                 }
                 """
-            
+
             model = llm.get_model("gpt-4.1-nano")
 
             llm_response = model.prompt(
@@ -114,15 +133,13 @@ def enhance_with_ai(request, pk):
                     },
                     "required": ["name", "description"],
                     "title": "CollectibleItem",
-                    "type": "object"
+                    "type": "object",
                 },
-                attachments=[
-                    llm.Attachment(path=collectible.image.path)
-                ],
-                key=OPENAI_API_KEY
+                attachments=[llm.Attachment(path=collectible.image.path)],
+                key=OPENAI_API_KEY,
             ).json()
 
-            # Example response structure from the LLM service            
+            # Example response structure from the LLM service
             # {
             #     'content': (
             #         '{"name":"Vintage Fujifilm X-T10 Mirrorless Camera with 18-55mm Lens",'
@@ -142,30 +159,29 @@ def enhance_with_ai(request, pk):
             #     'created': 1750357837
             # }
 
-            content = json.loads(llm_response["content"]) # type: ignore
+            content = json.loads(llm_response["content"])  # type: ignore
 
             enhanced = {
                 "name": content.get("name", collectible.name),
                 "description": content.get("description", collectible.description),
             }
 
-
         # Pass the original and enhanced data to the template
         original = {
             "name": collectible.name,
             "description": collectible.description,
         }
-        
-        return render(request, 'collectibles/collectible_enhanced.html', {
-            'collectible': collectible,
-            'original': original,
-            'enhanced': enhanced
-        })
-        
+
+        return render(
+            request,
+            "collectibles/collectible_enhanced.html",
+            {"collectible": collectible, "original": original, "enhanced": enhanced},
+        )
+
     except Exception as e:
         print(f"AI Enhancement Error: {e}")
         messages.error(request, f"An error occurred during AI enhancement: {str(e)}")
-        return redirect('collectible_detail', pk=pk)
+        return redirect("collectible_detail", pk=pk)
 
 
 @login_required
@@ -173,21 +189,24 @@ def enhance_with_ai(request, pk):
 def save_enhanced(request, pk):
     # Ensure only owner can save enhanced version
     collectible = get_object_or_404(Collectible, pk=pk, owner=request.user)
-    
+
     try:
         # Get the enhanced data from the form
-        name = request.POST.get('name')
-        description = request.POST.get('description')
-        
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+
         # Update the collectible
         collectible.name = name
         collectible.description = description
         collectible.save()
-        
-        messages.success(request, 'Enhanced collectible saved successfully!')
-        return redirect('collectible_detail', pk=pk)
-        
+
+        messages.success(request, "Enhanced collectible saved successfully!")
+        return redirect("collectible_detail", pk=pk)
+
     except Exception as e:
         print(f"Save Enhanced Error: {e}")
-        messages.error(request, f"An error occurred while saving the enhanced collectible: {str(e)}")
-        return redirect('collectible_detail', pk=pk)
+        messages.error(
+            request,
+            f"An error occurred while saving the enhanced collectible: {str(e)}",
+        )
+        return redirect("collectible_detail", pk=pk)
