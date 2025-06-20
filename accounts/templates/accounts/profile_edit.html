@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="card bg-base-100 shadow-xl max-w-2xl mx-auto">
+        <div class="card-body">
+            <h2 class="card-title text-2xl mb-6">Edit Your Profile</h2>
+            
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- User Information -->
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Account Information</h3>
+                        
+                        <div class="form-control mb-4">
+                            <label class="label">
+                                <span class="label-text">Username</span>
+                            </label>
+                            {{ u_form.username }}
+                            {% if u_form.username.errors %}
+                                <div class="text-error text-xs mt-1">{{ u_form.username.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-control mb-4">
+                            <label class="label">
+                                <span class="label-text">Email</span>
+                            </label>
+                            {{ u_form.email }}
+                            {% if u_form.email.errors %}
+                                <div class="text-error text-xs mt-1">{{ u_form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-control mb-4">
+                            <label class="label">
+                                <span class="label-text">First Name</span>
+                            </label>
+                            {{ u_form.first_name }}
+                            {% if u_form.first_name.errors %}
+                                <div class="text-error text-xs mt-1">{{ u_form.first_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-control mb-4">
+                            <label class="label">
+                                <span class="label-text">Last Name</span>
+                            </label>
+                            {{ u_form.last_name }}
+                            {% if u_form.last_name.errors %}
+                                <div class="text-error text-xs mt-1">{{ u_form.last_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Profile Information -->
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Profile Details</h3>
+                        
+                        <div class="form-control mb-4">
+                            <label class="label">
+                                <span class="label-text">Profile Image</span>
+                            </label>
+                            {% if profile.profile_image %}
+                                <div class="flex items-center mb-2">
+                                    <div class="avatar mr-4">
+                                        <div class="w-16 rounded-full">
+                                            <img src="{{ profile.profile_image.url }}" alt="Current profile image" />
+                                        </div>
+                                    </div>
+                                    <span class="text-sm">Current image</span>
+                                </div>
+                            {% endif %}
+                            {{ p_form.profile_image }}
+                            {% if p_form.profile_image.errors %}
+                                <div class="text-error text-xs mt-1">{{ p_form.profile_image.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-control mb-4">
+                            <label class="label">
+                                <span class="label-text">Location</span>
+                            </label>
+                            {{ p_form.location }}
+                            {% if p_form.location.errors %}
+                                <div class="text-error text-xs mt-1">{{ p_form.location.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-control mb-4">
+                            <label class="label">
+                                <span class="label-text">Birth Date</span>
+                            </label>
+                            {{ p_form.birth_date }}
+                            {% if p_form.birth_date.errors %}
+                                <div class="text-error text-xs mt-1">{{ p_form.birth_date.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-control mb-4">
+                            <label class="label">
+                                <span class="label-text">Bio</span>
+                            </label>
+                            {{ p_form.bio }}
+                            {% if p_form.bio.errors %}
+                                <div class="text-error text-xs mt-1">{{ p_form.bio.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-actions justify-end mt-6">
+                    <a href="{% url 'profile' %}" class="btn btn-ghost">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

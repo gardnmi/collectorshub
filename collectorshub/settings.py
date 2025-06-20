@@ -34,10 +34,18 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # My apps
     "collectibles",
+    "accounts",
     # 3rd Party apps
     "django_extensions",  # For additional management commands and features
     "django_cotton",
     "django_vite",
+    "allauth_ui",
+    "allauth",
+    "allauth.account", 
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",   
+    "widget_tweaks",
+    "slippers",            
 ]
 
 MIDDLEWARE = [
@@ -51,6 +59,7 @@ MIDDLEWARE = [
     
     # 3rd Party apps
     "django_htmx.middleware.HtmxMiddleware",
+    "allauth.account.middleware.AccountMiddleware",    
 ]
 
 ROOT_URLCONF = "collectorshub.urls"
@@ -65,10 +74,22 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+
+                # `allauth` needs this from django
+                "django.template.context_processors.request",    
+                      
             ],
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by email
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 
 WSGI_APPLICATION = "collectorshub.wsgi.application"
 
@@ -130,5 +151,27 @@ STATIC_ROOT = BASE_DIR / "staticfiles"  # Directory where static files will be c
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Django AllAuth Settings
+LOGIN_REDIRECT_URL = 'profile'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # Can be 'mandatory', 'optional', or 'none'
+
 # 3rd Party Apps Settings
 DJANGO_VITE = {"default": {"dev_mode": True}}
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        "APP": {
+            "client_id": "123",
+            "secret": "456",
+            "key": ""
+        }
+    }
+}
+
+# settings.py
+ALLAUTH_UI_THEME = "light"

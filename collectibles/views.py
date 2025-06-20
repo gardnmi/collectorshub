@@ -20,12 +20,13 @@ def collectible_list(request):
     return render(request, 'collectibles/collectible_list.html', {'collectibles': collectibles})
 
 # View a single collectible
+@login_required
 def collectible_detail(request, pk):
     collectible = get_object_or_404(Collectible, pk=pk)
     return render(request, 'collectibles/collectible_detail.html', {'collectible': collectible})
 
 # Create a new collectible
-# @login_required
+@login_required
 def collectible_create(request):
     if request.method == 'POST':
         form = CollectibleForm(request.POST, request.FILES)
@@ -40,7 +41,7 @@ def collectible_create(request):
     return render(request, 'collectibles/collectible_form.html', {'form': form, 'title': 'List New Collectible'})
 
 # Update an existing collectible
-# @login_required
+@login_required
 def collectible_update(request, pk):
     # Ensure only owner can update
     collectible = get_object_or_404(Collectible, pk=pk, owner=request.user)
@@ -55,7 +56,7 @@ def collectible_update(request, pk):
         form = CollectibleForm(instance=collectible)
     return render(request, 'collectibles/collectible_form.html', {'form': form, 'title': 'Update Collectible'})
 
-# @login_required
+@login_required
 def collectible_delete(request, pk):
     # Ensure only owner can delete
     collectible = get_object_or_404(Collectible, pk=pk, owner=request.user)
@@ -66,7 +67,7 @@ def collectible_delete(request, pk):
     return render(request, 'collectibles/collectible_confirm_delete.html', {'collectible': collectible})
 
 
-# @login_required
+@login_required
 def enhance_with_ai(request, pk):
     # Ensure only owner can enhance
     collectible = get_object_or_404(Collectible, pk=pk, owner=request.user)
@@ -167,7 +168,7 @@ def enhance_with_ai(request, pk):
         return redirect('collectible_detail', pk=pk)
 
 
-# @login_required
+@login_required
 @require_POST
 def save_enhanced(request, pk):
     # Ensure only owner can save enhanced version

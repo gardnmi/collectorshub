@@ -6,15 +6,19 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "django>=5.2.3",
+    "django-allauth-ui>=1.8.1",
+    "django-allauth[socialaccount]>=65.9.0",
     "django-cotton>=2.1.2",
     "django-extensions>=4.1",
     "django-htmx>=1.23.0",
     "django-unfold>=0.60.0",
     "django-vite>=3.1.0",
+    "django-widget-tweaks>=1.5.0",
     "llm>=0.26",
     "openai>=1.88.0",
     "pillow>=11.2.1",
     "python-decouple>=3.8",
+    "slippers>=0.6.2",
 ]
 
 [dependency-groups]
