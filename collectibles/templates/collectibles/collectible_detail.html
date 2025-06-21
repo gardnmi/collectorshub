@@ -16,14 +16,16 @@
             <div class="w-full flex flex-col items-center">
                 {# Main image (primary or first) #}
                 {% if primary_image %}
-                    <img src="{{ primary_image.image.url }}" alt="{{ collectible.name }}" class="object-cover w-full h-96 lg:h-full rounded-l-box cursor-pointer" onclick="document.getElementById('carousel-modal').showModal()"/>
+                    <a href="#carousel-slide-0" onclick="document.getElementById('carousel-modal').showModal();"><img src="{{ primary_image.image.url }}" alt="{{ collectible.name }}" class="object-cover w-full h-96 lg:h-full rounded-l-box cursor-pointer" /></a>
                 {% else %}
                     <img src="https://via.placeholder.com/600x400.png?text=No+Image" alt="No Image" class="object-cover w-full h-96 lg:h-full rounded-l-box"/>
                 {% endif %}
                 {# Thumbnails #}
                 <div class="flex gap-2 mt-2">
                     {% for img in images %}
-                        <img src="{{ img.image.url }}" alt="Thumbnail" class="w-16 h-16 object-cover rounded cursor-pointer border-2 {% if img.is_primary %}border-primary{% else %}border-base-200{% endif %}" onclick="document.getElementById('carousel-modal').showModal();document.getElementById('carousel-slide-{{ forloop.counter0 }}').scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'center'});"/>
+                        <a href="#carousel-slide-{{ forloop.counter0 }}" onclick="document.getElementById('carousel-modal').showModal();">
+                            <img src="{{ img.image.url }}" alt="Thumbnail" class="w-16 h-16 object-cover rounded cursor-pointer border-2 {% if img.is_primary %}border-primary{% else %}border-base-200{% endif %}" />
+                        </a>
                     {% endfor %}
                 </div>
             </div>
@@ -63,18 +65,30 @@
     </div>
 </div>
 
-{# DaisyUI Modal Carousel #}
+{# DaisyUI Modal Carousel with anchor navigation #}
 <dialog id="carousel-modal" class="modal">
   <div class="modal-box max-w-3xl">
     <div class="carousel w-full">
       {% for img in images %}
-        <div id="carousel-slide-{{ forloop.counter0 }}" class="carousel-item w-full flex flex-col items-center">
+        <div id="carousel-slide-{{ forloop.counter0 }}" class="carousel-item relative w-full flex flex-col items-center">
           <img src="{{ img.image.url }}" class="object-contain w-full max-h-[60vh] rounded" alt="Image {{ forloop.counter }}" />
           <div class="mt-2 flex gap-2">
             {% if not img.is_primary %}
               <span class="badge badge-outline">Secondary</span>
             {% else %}
               <span class="badge badge-primary">Primary</span>
+            {% endif %}
+          </div>
+          <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0 top-1/2 px-2">
+            {% if forloop.first %}
+              <a href="#carousel-slide-{{ images|length|add:'-1' }}" class="btn btn-circle btn-ghost">&#8592;</a>
+            {% else %}
+              <a href="#carousel-slide-{{ forloop.counter0|add:'-1' }}" class="btn btn-circle btn-ghost">&#8592;</a>
+            {% endif %}
+            {% if forloop.last %}
+              <a href="#carousel-slide-0" class="btn btn-circle btn-ghost">&#8594;</a>
+            {% else %}
+              <a href="#carousel-slide-{{ forloop.counter0|add:'1' }}" class="btn btn-circle btn-ghost">&#8594;</a>
             {% endif %}
           </div>
         </div>
@@ -87,5 +101,4 @@
     </div>
   </div>
 </dialog>
-
 {% endblock %}
