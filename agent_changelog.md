@@ -65,3 +65,4 @@
 
 ## 2025-06-21 - Profile Page Image Display Update
 - Updated `accounts/templates/accounts/profile.html` to use the new `CollectibleImage` model for displaying images on collectible and wishlist cards. The template now fetches the primary image (or first image) from the related images set, matching the logic in `collectible_list.html`. This removes legacy references to the old single-image field and ensures consistent image display across the app after the multi-image refactor.
+- Updated `wishlist/templates/wishlist/wishlist.html` to use the new `CollectibleImage` model for displaying images on wishlist cards. The template now fetches the primary image (or first image) from the related images set, matching the logic in `profile.html` and `collectible_list.html`. This ensures consistent image display after the multi-image refactor.
