@@ -1,0 +1,48 @@
+{% comment %}
+  Image gallery component for collectibles
+  Displays thumbnail grid and handles interactions with image modal
+{% endcomment %}
+
+<div class="image-gallery">
+  {% if collectible.all_images.exists %}
+    <div class="grid grid-cols-5 gap-2 mb-4">
+      {% for image in collectible.all_images %}
+        <div class="aspect-square overflow-hidden rounded-md border border-base-300 {% if image.is_primary %}ring-2 ring-primary ring-offset-1{% endif %}">
+          <img 
+            src="{{ image.image.url }}" 
+            alt="{% if image.caption %}{{ image.caption }}{% else %}{{ collectible.name }} - Image {{ forloop.counter }}{% endif %}" 
+            class="object-cover h-full w-full cursor-pointer hover:opacity-90 transition-opacity"
+            hx-get="{% url 'image_detail' collectible.pk image.pk %}"
+            hx-target="#imageModal"
+            hx-trigger="click"
+            hx-swap="innerHTML"
+            onclick="document.getElementById('image-modal').showModal()"
+          >
+        </div>
+      {% endfor %}
+    </div>
+  {% elif collectible.image %}
+    {# Fall back to the legacy single image #}
+    <div class="mb-4">
+      <img 
+        src="{{ collectible.image.url }}" 
+        alt="{{ collectible.name }}" 
+        class="object-cover w-full rounded-md max-h-96"
+      >
+    </div>
+  {% else %}
+    <div class="mb-4 flex justify-center items-center h-60 bg-base-200 rounded-md">
+      <span class="text-base-content/50">No images available</span>
+    </div>
+  {% endif %}
+</div>
+
+{# Image Modal for displaying larger images #}
+<dialog id="image-modal" class="modal">
+  <div id="imageModal" class="modal-box max-w-4xl p-0">
+    {# Content will be loaded via HTMX #}
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>Close</button>
+  </form>
+</dialog>

@@ -32,24 +32,156 @@
                     <input type="hidden" name="pk" value="{{ form.instance.pk }}">
                 {% endif %}
 
+                {# First render all fields except image #}
                 {% for field in form %}
-                    <div class="form-control mb-4">
-                        <label class="label">
-                            <span class="label-text">{{ field.label }}</span>
-                        </label>
-                        {{ field }}
-                        {% if field.help_text %}
+                    {% if field.name != 'image' %}
+                        <div class="form-control mb-4">
                             <label class="label">
-                                <span class="label-text-alt text-gray-500">{{ field.help_text }}</span>
+                                <span class="label-text">{{ field.label }}</span>
                             </label>
-                        {% endif %}
-                        {% for error in field.errors %}
-                            <label class="label">
-                                <span class="label-text-alt text-error">{{ error }}</span>
-                            </label>
-                        {% endfor %}
-                    </div>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <label class="label">
+                                    <span class="label-text-alt text-gray-500">{{ field.help_text }}</span>
+                                </label>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <label class="label">
+                                    <span class="label-text-alt text-error">{{ error }}</span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 {% endfor %}
+
+                {# Now render image upload section #}
+                <div class="divider">Images (up to 5)</div>
+                
+                {# Legacy single image field - kept for compatibility #}
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text">Legacy Image (Single Image Upload)</span>
+                    </label>
+                    {{ form.image }}
+                    <label class="label">
+                        <span class="label-text-alt text-gray-500">This is kept for compatibility. Use the multi-image upload below instead.</span>
+                    </label>
+                    {% for error in form.image.errors %}
+                        <label class="label">
+                            <span class="label-text-alt text-error">{{ error }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                
+                {# New multiple image upload section using formset #}
+                {{ formset.management_form }}
+                <div class="space-y-6" id="image-formset">
+                    {% for form in formset %}
+                        <div class="card bg-base-200 p-4 image-form">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-semibold">Image {{ forloop.counter }}</h4>
+                                {% if not form.instance.pk %}
+                                    {# Only show remove button for new, unsaved forms #}
+                                    <button type="button" class="btn btn-sm btn-circle btn-error" 
+                                            onclick="this.closest('.image-form').remove()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                {% endif %}
+                            </div>
+                            
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                                <div class="form-control md:col-span-8">
+                                    <label class="label">
+                                        <span class="label-text">Image</span>
+                                    </label>
+                                    {{ form.image }}
+                                    {% for error in form.image.errors %}
+                                        <label class="label">
+                                            <span class="label-text-alt text-error">{{ error }}</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                                
+                                <div class="form-control md:col-span-4">
+                                    <label class="label cursor-pointer">
+                                        <span class="label-text">Primary Image</span>
+                                        {{ form.is_primary }}
+                                    </label>
+                                    {% for error in form.is_primary.errors %}
+                                        <label class="label">
+                                            <span class="label-text-alt text-error">{{ error }}</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                                
+                                <div class="form-control md:col-span-12">
+                                    <label class="label">
+                                        <span class="label-text">Caption</span>
+                                    </label>
+                                    {{ form.caption }}
+                                    {% for error in form.caption.errors %}
+                                        <label class="label">
+                                            <span class="label-text-alt text-error">{{ error }}</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            {% if formset.can_delete and form.instance.pk %}
+                                <div class="flex justify-end mt-2">
+                                    <label class="label cursor-pointer">
+                                        <span class="label-text text-error mr-2">Delete</span>
+                                        {{ form.DELETE }}
+                                    </label>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="flex justify-end mt-4">
+                    <button type="button" id="add-more-images" class="btn btn-outline btn-sm mb-4"
+                            hx-get="{% url 'collectible_add_image_form' %}"
+                            hx-trigger="click"
+                            hx-target="#image-formset"
+                            hx-swap="beforeend"
+                            hx-indicator=".htmx-indicator"
+                            onclick="checkImageCount(event)">
+                        <span>+ Add Image</span>
+                        <span class="loading loading-spinner loading-xs htmx-indicator"></span>
+                    </button>
+                </div>
+                
+                <script>
+                    function checkImageCount(event) {
+                        // Check if we already have 5 image forms
+                        const imageFormCount = document.querySelectorAll('#image-formset .image-form').length;
+                        if (imageFormCount >= 5) {
+                            event.preventDefault();
+                            // Show an error message
+                            const toastContainer = document.createElement('div');
+                            toastContainer.className = 'toast toast-top toast-end';
+                            
+                            const alert = document.createElement('div');
+                            alert.className = 'alert alert-error';
+                            alert.innerHTML = '<span>Maximum of 5 images allowed</span>';
+                            
+                            toastContainer.appendChild(alert);
+                            document.body.appendChild(toastContainer);
+                            
+                            // Remove the toast after a delay
+                            setTimeout(() => {
+                                toastContainer.remove();
+                            }, 3000);
+                        }
+                    }
+                </script>
 
                 <div class="form-control mt-6">
                     <button type="submit" class="btn btn-primary w-full mb-3">{{ title }}</button>

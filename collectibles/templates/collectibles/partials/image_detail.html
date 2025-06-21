@@ -1,0 +1,54 @@
+<div class="relative">
+  <img 
+    src="{{ image.image.url }}" 
+    alt="{% if image.caption %}{{ image.caption }}{% else %}{{ collectible.name }} - Image{% endif %}" 
+    class="w-full h-auto"
+  >
+  
+  <div class="absolute top-0 right-0 m-4">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost bg-base-100/50">✕</button>
+    </form>
+  </div>
+
+  <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-base-300/80 to-transparent">
+    <div class="text-base-content">
+      <h3 class="font-bold">{{ collectible.name }}</h3>
+      {% if image.caption %}
+        <p>{{ image.caption }}</p>
+      {% endif %}
+    </div>
+  </div>
+  
+  <div class="absolute top-1/2 left-0 transform -translate-y-1/2 flex">
+    {% if not forloop.first %}
+      <button 
+        class="btn btn-circle btn-ghost bg-base-100/50 m-2"
+        hx-get="{% url 'image_detail' collectible.pk previous_image.pk %}"
+        hx-target="#imageModal"
+        hx-swap="innerHTML"
+        {% if previous_image %}aria-label="Previous image"{% else %}disabled aria-label="No previous image"{% endif %}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+    {% endif %}
+  </div>
+  
+  <div class="absolute top-1/2 right-0 transform -translate-y-1/2 flex">
+    {% if not forloop.last %}
+      <button 
+        class="btn btn-circle btn-ghost bg-base-100/50 m-2"
+        hx-get="{% url 'image_detail' collectible.pk next_image.pk %}"
+        hx-target="#imageModal"
+        hx-swap="innerHTML"
+        {% if next_image %}aria-label="Next image"{% else %}disabled aria-label="No next image"{% endif %}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    {% endif %}
+  </div>
+</div>

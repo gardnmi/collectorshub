@@ -10,15 +10,9 @@
     </div>
 </div>
 
-<div id="collectible-content" class="card lg:card-side bg-base-100 shadow-xl max-w-4xl mx-auto">
-    <figure class="lg:w-1/2">
-        {% if collectible.image %}
-            <img src="{{ collectible.image.url }}" alt="{{ collectible.name }}" class="object-cover w-full h-96 lg:h-full rounded-l-box"/>
-        {% else %}
-            <img src="https://via.placeholder.com/600x400.png?text=No+Image" alt="No Image" class="object-cover w-full h-96 lg:h-full rounded-l-box"/>
-        {% endif %}
-    </figure>
-    <div class="card-body lg:w-1/2">
+<div id="collectible-content" class="card bg-base-100 shadow-xl max-w-4xl mx-auto">
+    <div class="card-body">
+        {% include "collectibles/partials/image_gallery.html" with collectible=collectible %}
         <h2 class="card-title text-4xl mb-4">{{ collectible.name }}</h2>
         <p class="text-lg text-gray-700 mb-2">Description: <br>{{ collectible.description|default:"No description provided." }}</p>
         <p class="text-xl font-bold text-primary mb-2">Price: ${{ collectible.price }}</p>

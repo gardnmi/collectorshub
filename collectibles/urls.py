@@ -10,4 +10,7 @@ urlpatterns = [
     # New AI enhancement endpoints
     path("<int:pk>/enhance-with-ai/", views.enhance_with_ai, name="enhance_with_ai"),
     path("<int:pk>/save-enhanced/", views.save_enhanced, name="save_enhanced"),
+    # Image-related endpoints
+    path("<int:pk>/images/<int:image_pk>/", views.image_detail, name="image_detail"),
+    path("add-image-form/", views.collectible_add_image_form, name="collectible_add_image_form"),
 ]
