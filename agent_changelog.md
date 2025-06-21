@@ -52,3 +52,8 @@
 - Updated collectible detail view to check if items are in the user's wishlist
 - Updated the profile view to include wishlist items
 - Added CSS for wishlist elements
+
+## 2025-06-21 - Multi-Image Upload UI and Styling Fix
+- Implemented Django's recommended MultipleFileInput/MultipleFileField for multi-image upload in CollectibleForm
+- Updated collectible_form.html to wrap the file input in DaisyUI/Tailwind form-control, label, and help text for consistent styling
+- Ensured file input is styled and works with multiple file selection, matching the rest of the form
