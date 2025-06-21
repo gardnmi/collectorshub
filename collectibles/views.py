@@ -45,7 +45,12 @@ def collectible_detail(request, pk):
     return render(
         request,
         "collectibles/collectible_detail.html",
-        {"collectible": collectible, "in_wishlist": in_wishlist, "primary_image": primary_image, "images": images},
+        {
+            "collectible": collectible,
+            "in_wishlist": in_wishlist,
+            "primary_image": primary_image,
+            "images": images,
+        },
     )
 
 
@@ -185,7 +190,9 @@ def enhance_with_ai(request, pk):
                     "title": "CollectibleItem",
                     "type": "object",
                 },
-                attachments=[llm.Attachment(path=attachment_path)] if attachment_path else [],
+                attachments=[llm.Attachment(path=attachment_path)]
+                if attachment_path
+                else [],
                 key=OPENAI_API_KEY,
             ).json()
 
