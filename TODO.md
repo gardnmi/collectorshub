@@ -21,12 +21,12 @@ interactive_search_demo: https://www.youtube.com/watch?v=4lItzpcZTk4&list=PL-2EB
 hyperscript: https://www.youtube.com/watch?v=4lItzpcZTk4
 
 # Actual TODOs
-- [ ] Add user authentication with Django Allauth
-- [ ] Add security to views
+- [ ] Add google user authentication with Django Allauth
+- [x] Add security to views
 - [ ] Create a hero section
-- [ ] Create a wishlist app
+- [x] Create a wishlist app
 - [ ] Create a chat app to negotiate trades
-- [ ] Add multiple item images feature
+- [x] Add multiple item images feature
 - [ ] Add django-cleanup to remove unused media files https://pypi.org/project/django-cleanup/
 - [ ] Make toast disappear after a few seconds
 - [ ] Add <script src="https://unpkg.com/hyperscript.org@0.9.14"></script> to vite instead of using the cdn (currently in collectible_list.html)

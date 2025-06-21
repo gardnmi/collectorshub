@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Inbox{% endblock %}
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-6">Messages</h1>
+    <div class="grid gap-4">
+        {% for convo in conversations %}
+            <a href="{% url 'messaging:conversation_detail' convo.pk %}" class="card bg-base-100 shadow hover:shadow-lg transition">
+                <div class="card-body flex flex-row items-center justify-between">
+                    <div>
+                        <div class="font-semibold">
+                            {% if convo.item %}
+                                {{ convo.item.name }}
+                            {% else %}
+                                General Conversation
+                            {% endif %}
+                        </div>
+                        <div class="text-sm text-gray-500">Participants: {{ convo.participants.all|join:', ' }}</div>
+                    </div>
+                    <div class="text-xs text-gray-400">Last updated: {{ convo.updated_at|date:'M d, Y H:i' }}</div>
+                </div>
+            </a>
+        {% empty %}
+            <div class="alert alert-info">No conversations yet.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

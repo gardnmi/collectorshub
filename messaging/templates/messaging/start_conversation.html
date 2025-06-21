@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Start Conversation{% endblock %}
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-2xl font-bold mb-4">Start a Conversation</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% if item %}
+            <div class="mb-4">
+                <label class="block font-semibold mb-1">Item</label>
+                <div class="p-2 bg-base-200 rounded">{{ item.name }}</div>
+            </div>
+            <div class="mb-4">
+                <label class="block font-semibold mb-1">Seller</label>
+                <div class="p-2 bg-base-200 rounded">{{ seller.username }}</div>
+            </div>
+        {% else %}
+            <div class="mb-4">
+                <label class="block font-semibold mb-1">User ID to message</label>
+                <input type="number" name="user_id" class="input input-bordered w-full" required>
+            </div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Start Conversation</button>
+    </form>
+</div>
+{% endblock %}
