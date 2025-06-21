@@ -24,6 +24,7 @@ CollectorsHub is a Django-based web application for collectors to showcase, mana
 - Write type hints for functions and method signatures
 - Format code according to PEP 8 guidelines
 - Use docstrings for functions and classes
+- Always run "uv run manage.py" instead of "python manage.py" in the terminal to ensure proper environment setup
 
 ### Django Specific
 - Use Unfold for admin customizations rather than the default Django admin
