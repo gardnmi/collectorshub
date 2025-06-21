@@ -7,5 +7,5 @@ from unfold.admin import ModelAdmin
 # Register your models here.
 @admin.register(Profile)
 class ProfileAdmin(ModelAdmin):
-    list_display = ("user", "location", "birth_date") # type: ignore
+    list_display = ("user", "location", "birth_date")  # type: ignore
     search_fields = ("user__username", "location")

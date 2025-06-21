@@ -26,21 +26,22 @@ def collectible_list(request):
 @login_required
 def collectible_detail(request, pk):
     collectible = get_object_or_404(Collectible, pk=pk)
-    
+
     # Check if item is in user's wishlist
     in_wishlist = False
     if request.user.is_authenticated:
         # Using getattr to avoid import errors since this is a circular import
-        WishlistItem = getattr(__import__('wishlist.models', fromlist=['WishlistItem']), 'WishlistItem')
-        in_wishlist = WishlistItem.objects.filter(user=request.user, collectible=collectible).exists()
-    
+        WishlistItem = getattr(
+            __import__("wishlist.models", fromlist=["WishlistItem"]), "WishlistItem"
+        )
+        in_wishlist = WishlistItem.objects.filter(
+            user=request.user, collectible=collectible
+        ).exists()
+
     return render(
-        request, 
-        "collectibles/collectible_detail.html", 
-        {
-            "collectible": collectible,
-            "in_wishlist": in_wishlist
-        }
+        request,
+        "collectibles/collectible_detail.html",
+        {"collectible": collectible, "in_wishlist": in_wishlist},
     )
 
 
