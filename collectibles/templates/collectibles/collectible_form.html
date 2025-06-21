@@ -47,12 +47,14 @@
                     {% endif %}
                 {% endfor %}
 
-                {# Render the images field using the Django form for correct name/attrs and styling #}
+                {# Styled file input for images #}
                 <div class="form-control mb-4">
                     <label class="label">
                         <span class="label-text">{{ form.images.label }}</span>
                     </label>
-                    {{ form.images }}
+                    <div>
+                        {{ form.images }}
+                    </div>
                     <label class="label">
                         <span class="label-text-alt text-gray-500">{{ form.images.help_text }}</span>
                     </label>

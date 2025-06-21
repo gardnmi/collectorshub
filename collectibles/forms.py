@@ -6,6 +6,12 @@ from typing import Any
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
 
+    def __init__(self, attrs=None):
+        base_attrs = {"class": "file-input file-input-bordered w-full"}
+        if attrs:
+            base_attrs.update(attrs)
+        super().__init__(attrs=base_attrs)
+
 
 class MultipleFileField(forms.FileField):
     def __init__(self, *args, **kwargs):
