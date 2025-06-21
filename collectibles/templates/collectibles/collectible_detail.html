@@ -72,13 +72,6 @@
       {% for img in images %}
         <div id="carousel-slide-{{ forloop.counter0 }}" class="carousel-item relative w-full flex flex-col items-center">
           <img src="{{ img.image.url }}" class="object-contain w-full max-h-[60vh] rounded" alt="Image {{ forloop.counter }}" />
-          <div class="mt-2 flex gap-2">
-            {% if not img.is_primary %}
-              <span class="badge badge-outline">Secondary</span>
-            {% else %}
-              <span class="badge badge-primary">Primary</span>
-            {% endif %}
-          </div>
           <div class="absolute flex justify-between transform -translate-y-1/2 left-0 right-0 top-1/2 px-2">
             {% if forloop.first %}
               <a href="#carousel-slide-{{ images|length|add:'-1' }}" class="btn btn-circle btn-ghost">&#8592;</a>
