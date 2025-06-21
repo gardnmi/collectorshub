@@ -29,13 +29,15 @@
 
 <div id="card-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for collectible in collectibles %}
-        <div class="card bg-base-100 shadow-sm"> {# Removed w-96 here #}
+        <div class="card bg-base-100 shadow-sm">
         <figure>
-            {% if collectible.image %}
-            <img src="{{ collectible.image.url }}" alt="{{ collectible.name }}" />
-            {% else %}
-            <div class="bg-base-200 w-full h-48 flex items-center justify-center text-base-content/50">No Image</div>
-            {% endif %}
+            {% with primary=collectible.images.all|dictsortreversed:'is_primary'|first %}
+                {% if primary and primary.image %}
+                    <img src="{{ primary.image.url }}" alt="{{ collectible.name }}" />
+                {% else %}
+                    <div class="bg-base-200 w-full h-48 flex items-center justify-center text-base-content/50">No Image</div>
+                {% endif %}
+            {% endwith %}
         </figure>
         <div class="card-body">
             <h2 class="card-title">
