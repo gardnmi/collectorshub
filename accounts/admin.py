@@ -10,5 +10,5 @@ admin.site.unregister(Profile)  # Unregister the default Profile admin if it exi
 # Register your models here.
 @admin.register(Profile)
 class ProfileAdmin(ModelAdmin):
-    list_display = ("user", "location", "birth_date")
+    list_display = ("user", "location", "birth_date") # type: ignore
     search_fields = ("user__username", "location")
