@@ -1,18 +1,5 @@
 # Agent Changelog
 
-## 2025-06-21 - Enhanced Multiple Image Support for Collectibles
-- Created new CollectibleImage model to support up to 5 images per collectible
-- Implemented image gallery in collectible detail view with DaisyUI and HTMX
-- Added modal-based image viewer for browsing collectible images
-- Enhanced collectible form to support multiple image uploads with captions
-- Created primary image designation system
-- Added support for next/previous navigation in the image viewer
-- Added ability to remove image form boxes when adding too many images
-- Implemented client-side validation to limit to maximum 5 images
-- Improved form handling for removed image boxes
-- Maintained backward compatibility with existing single-image implementation
-- Implemented HTMX-powered dynamic image form addition
-
 ## 2025-06-21 - Fixed Wishlist Toast and Count Updates
 - Fixed wishlist count to update immediately using Out-Of-Band (OOB) swaps
 - Improved toast notification styling with proper DaisyUI components
@@ -60,3 +47,15 @@
 - Created tab interface on user profile to show wishlist items
 - Added "Add to Wishlist" and "Remove from Wishlist" buttons on collectible detail pages
 - Created dedicated page for viewing the full wishlist
+
+### Integration:
+- Updated collectible detail view to check if items are in the user's wishlist
+- Updated the profile view to include wishlist items
+- Added CSS for wishlist elements
+
+## 2025-06-21 - Migrated Legacy Image Field to CollectibleImage Model
+- Created a reusable partial template for displaying collectible images
+- Updated collectible list to use the new CollectibleImage model
+- Created management command to migrate legacy images to the CollectibleImage model
+- Added migration to make the legacy image field nullable (preparation for removal)
+- Improved image display with consistent styling and fallback handling
