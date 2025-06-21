@@ -11,13 +11,15 @@
             {% for item in wishlist_items %}
                 <div class="card bg-base-100 shadow-xl" id="wishlist-item-{{ item.pk }}">
                     <figure class="h-48">
-                        {% if item.collectible.image %}
-                            <img src="{{ item.collectible.image.url }}" alt="{{ item.collectible.name }}" class="h-full w-full object-cover" />
-                        {% else %}
-                            <div class="h-full w-full bg-gray-200 flex items-center justify-center">
-                                <span class="text-gray-400">No Image</span>
-                            </div>
-                        {% endif %}
+                        {% with primary=item.collectible.images.all|dictsortreversed:'is_primary'|first %}
+                            {% if primary and primary.image %}
+                                <img src="{{ primary.image.url }}" alt="{{ item.collectible.name }}" class="h-full w-full object-cover" />
+                            {% else %}
+                                <div class="h-full w-full bg-gray-200 flex items-center justify-center">
+                                    <span class="text-gray-400">No Image</span>
+                                </div>
+                            {% endif %}
+                        {% endwith %}
                     </figure>
                     <div class="card-body">
                         <h2 class="card-title">{{ item.collectible.name }}</h2>
