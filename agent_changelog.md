@@ -57,3 +57,8 @@
 - Implemented Django's recommended MultipleFileInput/MultipleFileField for multi-image upload in CollectibleForm
 - Updated collectible_form.html to wrap the file input in DaisyUI/Tailwind form-control, label, and help text for consistent styling
 - Ensured file input is styled and works with multiple file selection, matching the rest of the form
+
+## 2025-06-21 - DaisyUI Carousel Modal Navigation Fix
+- Updated collectible detail modal carousel to use DaisyUI's pure HTML anchor-based navigation
+- Removed custom JavaScript for carousel navigation; now uses only DaisyUI and Django template logic
+- Fixed left/right arrow logic so carousel wraps correctly and navigation is smooth for all images
