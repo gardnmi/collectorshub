@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "collectibles",
     "accounts",
     "wishlist",
+    "collectorshub",
     # 3rd Party apps
     "django_extensions",  # For additional management commands and features
     "django_cotton",
