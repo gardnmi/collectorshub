@@ -5,6 +5,7 @@
       <div id="wishlist-count-container">
         {% include "partials/wishlist_count.html" %}
       </div>
+      <a href="{% url 'messaging:inbox' %}" class="btn btn-primary">Messages</a>
       <a href="{% url 'profile' %}" class="btn btn-ghost">Profile</a>
       <a href="{% url 'account_logout' %}" class="btn btn-outline">Logout</a>
     {% else %}

@@ -10,6 +10,7 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("collectibles/", include("collectibles.urls")),
     path("wishlist/", include("wishlist.urls")),
+    path("messaging/", include(("messaging.urls", "messaging"), namespace="messaging")),
     path("", index, name="index"),
 ]
 

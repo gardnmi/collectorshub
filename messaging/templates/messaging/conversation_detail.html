@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Conversation{% endblock %}
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-2xl font-bold mb-4">Conversation</h1>
+    <div class="card bg-base-100 shadow mb-6">
+        <div class="card-body max-h-[60vh] overflow-y-auto" id="messages-list">
+            {% include "messaging/_messages_list.html" with messages=messages user=user %}
+        </div>
+        <form method="post" enctype="multipart/form-data" class="card-actions p-4 border-t" hx-post="" hx-target="#messages-list" hx-swap="outerHTML">
+            {% csrf_token %}
+            <div class="flex flex-col md:flex-row gap-2 items-center">
+                {{ form.text }}
+                {{ form.attachment }}
+                <label class="flex items-center gap-1">
+                  {{ form.is_offer }} <span class="text-sm">Offer?</span>
+                </label>
+                {{ form.offer_amount }}
+                <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+            {% if form.errors %}
+              <div class="text-error mt-2">{{ form.errors }}</div>
+            {% endif %}
+        </form>
+    </div>
+    <a href="{% url 'messaging:inbox' %}" class="btn btn-outline">Back to Inbox</a>
+</div>
+{% endblock %}

@@ -68,3 +68,26 @@
 - Updated `accounts/templates/accounts/profile.html` to use the new `CollectibleImage` model for displaying images on collectible and wishlist cards. The template now fetches the primary image (or first image) from the related images set, matching the logic in `collectible_list.html`. This removes legacy references to the old single-image field and ensures consistent image display across the app after the multi-image refactor.
 - Updated `wishlist/templates/wishlist/wishlist.html` to use the new `CollectibleImage` model for displaying images on wishlist cards. The template now fetches the primary image (or first image) from the related images set, matching the logic in `profile.html` and `collectible_list.html`. This ensures consistent image display after the multi-image refactor.
 - Updated the 'View Full Wishlist' button in the profile page's wishlist tab to use 'btn-primary btn-sm' for consistent color and style with other action buttons on the page.
+
+## 2025-06-21 - User-to-User Messaging System (HTMX, DaisyUI, Django)
+
+- Scaffolded new Django app `messaging` with models: `Conversation` (participants, optional item), `Message` (sender, text, attachment, is_offer, offer_amount).
+- Registered `Conversation` and `Message` in Unfold admin.
+- Created `MessageForm` for sending messages/offers, using Tailwind/DaisyUI classes.
+- Implemented views:
+  - `inbox` (list conversations)
+  - `conversation_detail` (view/send messages, HTMX support)
+  - `start_conversation` (initiate conversation, item-specific or general)
+- Added templates:
+  - `inbox.html` (DaisyUI card list)
+  - `conversation_detail.html` (DaisyUI chat UI, message form, HTMX-ready, uses `_messages_list.html` partial)
+  - `start_conversation.html` (item and seller info, user_id only for general)
+  - `_messages_list.html` (partial for rendering messages, with correct Django template logic)
+- Registered messaging app in `INSTALLED_APPS` and added its URLs to the main project with the correct namespace.
+- Added "Messages" button to main navbar for authenticated users, linking to messaging inbox.
+- Added "Contact Seller" button to collectible detail pages for authenticated users (not the owner), styled with DaisyUI, linking to start_conversation for the item.
+- Improved start_conversation so that when accessed from an item, it auto-selects the seller and hides the user_id field.
+- Fixed Django template errors (replaced Python inline if/else with Django template logic in all messaging templates).
+- Added POST handling to `conversation_detail`: on HTMX request, only the messages list partial is returned to avoid HTML duplication; on normal POST, redirect.
+- Updated form rendering to use direct field output (no crispy forms), with Tailwind/DaisyUI classes.
+- All messaging templates now use correct Django template logic and are HTMX-ready for smooth chat experience.
