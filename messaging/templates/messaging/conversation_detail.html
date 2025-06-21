@@ -9,14 +9,16 @@
         </div>
         <form method="post" enctype="multipart/form-data" class="card-actions p-4 border-t" hx-post="" hx-target="#messages-list" hx-swap="outerHTML">
             {% csrf_token %}
-            <div class="flex flex-col md:flex-row gap-2 items-center">
+            <div class="flex flex-col gap-2">
                 {{ form.text }}
-                {{ form.attachment }}
-                <label class="flex items-center gap-1">
-                  {{ form.is_offer }} <span class="text-sm">Offer?</span>
-                </label>
-                {{ form.offer_amount }}
-                <button type="submit" class="btn btn-primary">Send</button>
+                <div class="flex flex-col md:flex-row gap-2 items-center">
+                    {{ form.attachment }}
+                    <label class="flex items-center gap-1">
+                      {{ form.is_offer }} <span class="text-sm">Offer?</span>
+                    </label>
+                    {{ form.offer_amount }}
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
             </div>
             {% if form.errors %}
               <div class="text-error mt-2">{{ form.errors }}</div>

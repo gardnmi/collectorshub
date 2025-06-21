@@ -91,3 +91,10 @@
 - Added POST handling to `conversation_detail`: on HTMX request, only the messages list partial is returned to avoid HTML duplication; on normal POST, redirect.
 - Updated form rendering to use direct field output (no crispy forms), with Tailwind/DaisyUI classes.
 - All messaging templates now use correct Django template logic and are HTMX-ready for smooth chat experience.
+
+## 2025-06-21 - Messaging UI/UX Improvements
+
+- Updated `MessageForm` to use a resizable textarea for the message input, improving usability for longer messages.
+- Rearranged the conversation form in `conversation_detail.html` so the message box is on top, with file upload, offer checkbox, offer amount, and send button below for a cleaner layout.
+- Improved `_messages_list.html` to only render the sender's profile image if it exists, preventing broken or empty avatars and matching the actual profile model field (`profile_image`).
+- All changes follow TailwindCSS and DaisyUI conventions for consistent styling.
