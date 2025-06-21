@@ -13,11 +13,21 @@ def profile(request):
 
     # Create or get profile (in case it doesn't exist yet)
     profile, created = Profile.objects.get_or_create(user=user)
+    
+    # Get user's collectibles
+    collectibles = user.collectibles.all()
+    
+    # Import WishlistItem model using getattr to avoid circular import issues
+    WishlistItem = getattr(__import__('wishlist.models', fromlist=['WishlistItem']), 'WishlistItem')
+    
+    # Get user's wishlist items (prefetch related collectibles for efficiency)
+    wishlist_items = WishlistItem.objects.filter(user=user).select_related('collectible')
 
     context = {
         "user": user,
         "profile": profile,
-        "collectibles": user.collectibles.all(),
+        "collectibles": collectibles,
+        "wishlist_items": wishlist_items,
     }
 
     return render(request, "accounts/profile.html", context)

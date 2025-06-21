@@ -9,6 +9,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("accounts/", include("accounts.urls")),
     path("collectibles/", include("collectibles.urls")),
+    path("wishlist/", include("wishlist.urls")),
     path("", index, name="index"),
 ]
 
