@@ -24,5 +24,8 @@ hyperscript: https://www.youtube.com/watch?v=4lItzpcZTk4
 - [ ] Add user authentication with Django Allauth
 - [ ] Add security to views
 - [ ] Create a hero section
-- [ ] Create a shopping cart app
-
+- [ ] Create a wishlist app
+- [ ] Create a chat app to negotiate trades
+- [ ] Add multiple item images feature
+- [ ] Add django-cleanup to remove unused media files https://pypi.org/project/django-cleanup/
+- [ ] Make toast disappear after a few seconds

@@ -44,6 +44,9 @@
                 </button>           
                 <a href="{% url 'collectible_update' collectible.pk %}" class="btn btn-warning">Edit</a>
                 <a href="{% url 'collectible_delete' collectible.pk %}" class="btn btn-error">Delete</a>
+            {% elif user.is_authenticated %}
+                {% include "wishlist/partials/wishlist_button.html" with collectible=collectible in_wishlist=in_wishlist %}
+                <button class="btn btn-success" disabled>Purchase (Feature Coming Soon!)</button>
             {% else %}
                 <button class="btn btn-success" disabled>Purchase (Feature Coming Soon!)</button>
             {% endif %}

@@ -11,8 +11,11 @@
     {% vite_hmr_client %}
 
     {% vite_asset 'static/js/main.js' %}
+    <link rel="stylesheet" href="/static/css/wishlist.css">
   </head>
-  <body class="bg-base-200 min-h-screen flex flex-col" hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'>
+  <body class="bg-base-200 min-h-screen flex flex-col" 
+      hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'
+  >
     {% include 'nav.html' %}
     <div class="container mx-auto p-4 flex-grow">
       <!-- <div class="container mx-auto px-4 md:px-6 lg:px-8"> -->
@@ -40,7 +43,7 @@
         </div>
       {% endif %}
       <!-- Toast container for HTMX messages -->
-      <div id="htmx-messages" class="toast toast-end"></div>
+      <div id="htmx-messages" class="toast toast-end z-50"></div>
     </div>
     <footer class="footer footer-center p-4 bg-base-300 text-base-content mt-8">
         <aside>
