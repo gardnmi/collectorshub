@@ -29,3 +29,4 @@ hyperscript: https://www.youtube.com/watch?v=4lItzpcZTk4
 - [ ] Add multiple item images feature
 - [ ] Add django-cleanup to remove unused media files https://pypi.org/project/django-cleanup/
 - [ ] Make toast disappear after a few seconds
+- [ ] Add <script src="https://unpkg.com/hyperscript.org@0.9.14"></script> to vite instead of using the cdn (currently in collectible_list.html)
