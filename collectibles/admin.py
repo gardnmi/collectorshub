@@ -36,7 +36,7 @@ class CollectibleAdmin(admin.ModelAdmin):
         "is_sold",
         "get_categories",
         "created_at",
-    ) # type: ignore
+    )  # type: ignore
     list_filter = ("condition", "is_sold", "categories")
     search_fields = ("name", "description", "owner__username")
 
