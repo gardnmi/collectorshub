@@ -17,22 +17,17 @@
 
 <div class="card lg:card-side bg-base-100 shadow-xl max-w-4xl mx-auto">
     <div class="card-body relative">
-        {# Back to Detail button (top right) #}
-
         <h2 class="card-title text-3xl mb-6 text-center">{{ title }}</h2>
-        {# The form container that HTMX will replace #}
         <div id="collectibleFormContainer">
-            {# This div exists to be the hx-target if you're creating a new collectible
-               and want the *initial* form to contain the ID #}
             <form method="post" enctype="multipart/form-data" id="collectibleForm">
                 {% csrf_token %}
-
-                {# Hidden input for PK, if it's an update form #}
                 {% if form.instance.pk %}
                     <input type="hidden" name="pk" value="{{ form.instance.pk }}">
                 {% endif %}
 
+                {# Render all fields except images #}
                 {% for field in form %}
+                    {% if field.name != 'images' %}
                     <div class="form-control mb-4">
                         <label class="label">
                             <span class="label-text">{{ field.label }}</span>
@@ -49,46 +44,54 @@
                             </label>
                         {% endfor %}
                     </div>
+                    {% endif %}
                 {% endfor %}
+
+                {# Render the images field using the Django form for correct name/attrs and styling #}
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text">{{ form.images.label }}</span>
+                    </label>
+                    {{ form.images }}
+                    <label class="label">
+                        <span class="label-text-alt text-gray-500">{{ form.images.help_text }}</span>
+                    </label>
+                    {% if form.images.errors %}
+                        {% for error in form.images.errors %}
+                            <label class="label">
+                                <span class="label-text-alt text-error">{{ error }}</span>
+                            </label>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                {# Image management UI for update form #}
+                {% if images %}
+                <div class="mb-6">
+                    <label class="label"><span class="label-text">Existing Images</span></label>
+                    <div class="flex flex-wrap gap-4">
+                        {% for img in images %}
+                        <div class="relative group border rounded p-2 flex flex-col items-center w-32">
+                            <img src="{{ img.image.url }}" class="w-24 h-24 object-cover rounded mb-2 border {% if img.is_primary %}border-primary{% else %}border-base-200{% endif %}" alt="Image {{ forloop.counter }}" />
+                            <div class="flex gap-1">
+                                {% if not img.is_primary %}
+                                <button name="set_primary_{{ img.id }}" value="1" class="btn btn-xs btn-outline btn-primary" title="Set as Primary">★</button>
+                                {% else %}
+                                <span class="badge badge-primary">Primary</span>
+                                {% endif %}
+                                <button name="delete_image_{{ img.id }}" value="1" class="btn btn-xs btn-outline btn-error ml-1" title="Delete">✕</button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
 
                 <div class="form-control mt-6">
                     <button type="submit" class="btn btn-primary w-full mb-3">{{ title }}</button>
-
-                    {% comment %} <button
-                        type="button"
-                        id="improveWithAIButton"
-                        class="btn btn-secondary w-full"
-                        hx-post="{% url 'improve_with_ai' %}"
-                        hx-trigger="click"
-                        hx-target="#collectibleForm" {# Target the form itself #}
-                        hx-swap="outerHTML" {# Replace the entire form with the updated one #}
-                        {# Include all necessary fields #}
-                        hx-include="[name='name'], [name='description'], [name='price'], [name='condition'], [name='categories'], [name='pk']"
-                        hx-indicator="#aiSpinner"
-                    >
-                        <span id="aiButtonText">Improve with AI</span>
-                        <span id="aiSpinner" class="loading loading-spinner hx-indicator hidden"></span>
-                    </button> {% endcomment %}
                 </div>
             </form>
-        </div> {# End collectibleFormContainer #}
+        </div>
     </div>
 </div>
-
-{% comment %} <script>
-    document.body.addEventListener('showMessage', function(evt) {
-        const message = evt.detail.value;
-        // Implement your DaisyUI toast here
-        // Example: const toastContainer = document.querySelector('.toast-end');
-        // if (toastContainer) {
-        //     const alertDiv = document.createElement('div');
-        //     alertDiv.className = 'alert alert-info'; // Adjust alert-type based on success/error
-        //     alertDiv.innerHTML = `<span>${message}</span>`;
-        //     toastContainer.appendChild(alertDiv);
-        //     setTimeout(() => alertDiv.remove(), 5000); // Remove after 5 seconds
-        // } else {
-            alert(message); // Fallback
-        // }
-    });
-</script> {% endcomment %}
 {% endblock %}

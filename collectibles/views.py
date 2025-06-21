@@ -9,7 +9,7 @@ from django.conf import settings
 
 from collectibles.forms import CollectibleForm
 
-from .models import Collectible
+from .models import Collectible, CollectibleImage
 
 OPENAI_API_KEY = getattr(settings, "OPENAI_API_KEY")
 
@@ -38,10 +38,14 @@ def collectible_detail(request, pk):
             user=request.user, collectible=collectible
         ).exists()
 
+    # Get the primary image (or first image if none marked primary)
+    images = collectible.images.all()
+    primary_image = images.filter(is_primary=True).first() or images.first()
+
     return render(
         request,
         "collectibles/collectible_detail.html",
-        {"collectible": collectible, "in_wishlist": in_wishlist},
+        {"collectible": collectible, "in_wishlist": in_wishlist, "primary_image": primary_image, "images": images},
     )
 
 
@@ -54,6 +58,15 @@ def collectible_create(request):
             collectible = form.save(commit=False)
             collectible.owner = request.user
             collectible.save()
+            form.save_m2m()
+            # Handle multiple images
+            images = request.FILES.getlist("images")
+            for idx, image in enumerate(images):
+                CollectibleImage.objects.create(
+                    collectible=collectible,
+                    image=image,
+                    is_primary=(idx == 0),  # First image is primary by default
+                )
             messages.success(request, "Collectible added successfully!")
             return redirect("collectible_detail", pk=collectible.pk)
     else:
@@ -68,12 +81,28 @@ def collectible_create(request):
 # Update an existing collectible
 @login_required
 def collectible_update(request, pk):
-    # Ensure only owner can update
     collectible = get_object_or_404(Collectible, pk=pk, owner=request.user)
+    images = collectible.images.all()  # This is valid after model edit
     if request.method == "POST":
         form = CollectibleForm(request.POST, request.FILES, instance=collectible)
         if form.is_valid():
             form.save()
+            # Handle new images
+            new_images = request.FILES.getlist("images")
+            for image in new_images:
+                CollectibleImage.objects.create(
+                    collectible=collectible,
+                    image=image,
+                    is_primary=False,
+                )
+            # Handle image actions (delete, set primary)
+            for img in images:
+                if f"delete_image_{img.id}" in request.POST:
+                    img.delete()
+                elif f"set_primary_{img.id}" in request.POST:
+                    images.update(is_primary=False)
+                    img.is_primary = True
+                    img.save()
             messages.success(request, "Collectible updated successfully!")
             return redirect("collectible_detail", pk=collectible.pk)
     else:
@@ -81,7 +110,11 @@ def collectible_update(request, pk):
     return render(
         request,
         "collectibles/collectible_form.html",
-        {"form": form, "title": "Update Collectible"},
+        {
+            "form": form,
+            "title": "Update Collectible",
+            "images": images,
+        },
     )
 
 
@@ -138,6 +171,9 @@ def enhance_with_ai(request, pk):
 
             model = llm.get_model("gpt-4.1-nano")
 
+            # Use the primary image for AI enhancement if available
+            primary_image = collectible.images.filter(is_primary=True).first()
+            attachment_path = primary_image.image.path if primary_image else None
             llm_response = model.prompt(
                 prompt=prompt,
                 schema={
@@ -149,7 +185,7 @@ def enhance_with_ai(request, pk):
                     "title": "CollectibleItem",
                     "type": "object",
                 },
-                attachments=[llm.Attachment(path=collectible.image.path)],
+                attachments=[llm.Attachment(path=attachment_path)] if attachment_path else [],
                 key=OPENAI_API_KEY,
             ).json()
 

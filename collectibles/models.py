@@ -35,7 +35,6 @@ class Collectible(models.Model):
         ],
         default="used_good",
     )
-    image = models.ImageField(upload_to="collectibles_images/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_sold = models.BooleanField(default=False)
@@ -45,6 +44,21 @@ class Collectible(models.Model):
 
     class Meta:
         ordering = ["-updated_at"]
+
+
+class CollectibleImage(models.Model):
+    collectible = models.ForeignKey(
+        Collectible, on_delete=models.CASCADE, related_name="images"
+    )
+    image = models.ImageField(upload_to="collectibles_images/")
+    is_primary = models.BooleanField(default=False)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"Image for {self.collectible.name} ({'Primary' if self.is_primary else 'Secondary'})"
+
+    class Meta:
+        ordering = ["-is_primary", "uploaded_at"]
 
 
 # Add default categories when the database is initialized

@@ -11,9 +11,22 @@
 </div>
 
 <div id="collectible-content" class="card lg:card-side bg-base-100 shadow-xl max-w-4xl mx-auto">
-    <figure class="lg:w-1/2">
-        {% if collectible.image %}
-            <img src="{{ collectible.image.url }}" alt="{{ collectible.name }}" class="object-cover w-full h-96 lg:h-full rounded-l-box"/>
+    <figure class="lg:w-1/2 flex flex-col items-center">
+        {% if images %}
+            <div class="w-full flex flex-col items-center">
+                {# Main image (primary or first) #}
+                {% if primary_image %}
+                    <img src="{{ primary_image.image.url }}" alt="{{ collectible.name }}" class="object-cover w-full h-96 lg:h-full rounded-l-box cursor-pointer" onclick="document.getElementById('carousel-modal').showModal()"/>
+                {% else %}
+                    <img src="https://via.placeholder.com/600x400.png?text=No+Image" alt="No Image" class="object-cover w-full h-96 lg:h-full rounded-l-box"/>
+                {% endif %}
+                {# Thumbnails #}
+                <div class="flex gap-2 mt-2">
+                    {% for img in images %}
+                        <img src="{{ img.image.url }}" alt="Thumbnail" class="w-16 h-16 object-cover rounded cursor-pointer border-2 {% if img.is_primary %}border-primary{% else %}border-base-200{% endif %}" onclick="document.getElementById('carousel-modal').showModal();document.getElementById('carousel-slide-{{ forloop.counter0 }}').scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'center'});"/>
+                    {% endfor %}
+                </div>
+            </div>
         {% else %}
             <img src="https://via.placeholder.com/600x400.png?text=No+Image" alt="No Image" class="object-cover w-full h-96 lg:h-full rounded-l-box"/>
         {% endif %}
@@ -28,16 +41,12 @@
         <div class="card-actions justify-end mt-auto">
             {% if user.is_authenticated and collectible.owner == user %}      
                 <button
-                    class="btn btn-accent relative overflow-hidden" {# Added relative and overflow-hidden for better control #}
+                    class="btn btn-accent relative overflow-hidden"
                     hx-get="{% url 'enhance_with_ai' collectible.pk %}"
                     hx-target="#collectible-content"
                     hx-swap="outerHTML"
-                    {# No hx-indicator needed here. We'll toggle direct classes. #}
                 >
-                    {# Normal content - initially visible #}
                     <span class="normal-content">✨ Enhance with AI</span>
-
-                    {# Loading content - initially hidden. Position absolutely to not affect normal flow. #}
                     <span class="loading-content absolute inset-0 flex items-center justify-center h-full w-full opacity-0 pointer-events-none transition-opacity duration-200">
                         <span class="loading loading-spinner loading-sm mr-2"></span> Thinking...
                     </span>
@@ -53,5 +62,30 @@
         </div>
     </div>
 </div>
+
+{# DaisyUI Modal Carousel #}
+<dialog id="carousel-modal" class="modal">
+  <div class="modal-box max-w-3xl">
+    <div class="carousel w-full">
+      {% for img in images %}
+        <div id="carousel-slide-{{ forloop.counter0 }}" class="carousel-item w-full flex flex-col items-center">
+          <img src="{{ img.image.url }}" class="object-contain w-full max-h-[60vh] rounded" alt="Image {{ forloop.counter }}" />
+          <div class="mt-2 flex gap-2">
+            {% if not img.is_primary %}
+              <span class="badge badge-outline">Secondary</span>
+            {% else %}
+              <span class="badge badge-primary">Primary</span>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
 
 {% endblock %}

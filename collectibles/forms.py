@@ -1,11 +1,36 @@
 from django import forms
-from collectibles.models import Collectible
+from collectibles.models import Collectible, CollectibleImage
+from typing import Any
+
+
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = [single_file_clean(data, initial)] if data else []
+        return result
 
 
 class CollectibleForm(forms.ModelForm):
+    images = MultipleFileField(
+        required=False,
+        label="Add Images",
+        help_text="You can upload multiple images.",
+    )
+
     class Meta:
         model = Collectible
-        fields = ["name", "description", "price", "condition", "image", "categories"]
+        fields = ["name", "description", "price", "condition", "categories"]
         widgets = {
             "name": forms.TextInput(
                 attrs={
@@ -27,9 +52,6 @@ class CollectibleForm(forms.ModelForm):
                 }
             ),
             "condition": forms.Select(attrs={"class": "select select-bordered w-full"}),
-            "image": forms.FileInput(
-                attrs={"class": "file-input file-input-bordered w-full"}
-            ),
             "categories": forms.SelectMultiple(
                 attrs={
                     "class": "select select-bordered w-full",
@@ -39,7 +61,21 @@ class CollectibleForm(forms.ModelForm):
             ),
         }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         # You can add more customization here if needed
         # For example, if you want to add specific DaisyUI classes to certain fields
+
+
+class CollectibleImageForm(forms.ModelForm):
+    class Meta:
+        model = CollectibleImage
+        fields = ["image", "is_primary"]
+        widgets = {
+            "image": forms.ClearableFileInput(
+                attrs={"class": "file-input file-input-bordered w-full"}
+            ),
+            "is_primary": forms.CheckboxInput(
+                attrs={"class": "checkbox checkbox-primary"}
+            ),
+        }
