@@ -2,11 +2,13 @@
 <ul class="space-y-2">
   {% for message in messages %}
     <li class="chat {% if message.sender == user %}chat-end{% else %}chat-start{% endif %}">
-      <div class="chat-image avatar">
-        <div class="w-10 rounded-full">
-          <img src="{{ message.sender.profile.avatar.url|default:'/static/img/default-avatar.png' }}" alt="{{ message.sender.username }}" />
+      {% if message.sender.profile.profile_image %}
+        <div class="chat-image avatar">
+          <div class="w-10 rounded-full">
+            <img src="{{ message.sender.profile.profile_image.url }}" alt="{{ message.sender.username }}" />
+          </div>
         </div>
-      </div>
+      {% endif %}
       <div class="chat-header">
         {{ message.sender.username }}
         <time class="text-xs opacity-50 ml-2">{{ message.created_at|date:'SHORT_DATETIME_FORMAT' }}</time>
