@@ -62,3 +62,6 @@
 - Updated collectible detail modal carousel to use DaisyUI's pure HTML anchor-based navigation
 - Removed custom JavaScript for carousel navigation; now uses only DaisyUI and Django template logic
 - Fixed left/right arrow logic so carousel wraps correctly and navigation is smooth for all images
+
+## 2025-06-21 - Profile Page Image Display Update
+- Updated `accounts/templates/accounts/profile.html` to use the new `CollectibleImage` model for displaying images on collectible and wishlist cards. The template now fetches the primary image (or first image) from the related images set, matching the logic in `collectible_list.html`. This removes legacy references to the old single-image field and ensures consistent image display across the app after the multi-image refactor.

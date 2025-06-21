@@ -69,13 +69,15 @@
                         {% for item in collectibles %}
                             <div class="card bg-base-100 shadow-md">
                                 <figure>
-                                    {% if item.image %}
-                                        <img src="{{ item.image.url }}" alt="{{ item.name }}" class="h-48 w-full object-cover" />
-                                    {% else %}
-                                        <div class="h-48 w-full bg-gray-200 flex items-center justify-center">
-                                            <span class="text-gray-400">No Image</span>
-                                        </div>
-                                    {% endif %}
+                                    {% with primary=item.images.all|dictsortreversed:'is_primary'|first %}
+                                        {% if primary and primary.image %}
+                                            <img src="{{ primary.image.url }}" alt="{{ item.name }}" class="h-48 w-full object-cover" />
+                                        {% else %}
+                                            <div class="h-48 w-full bg-gray-200 flex items-center justify-center">
+                                                <span class="text-gray-400">No Image</span>
+                                            </div>
+                                        {% endif %}
+                                    {% endwith %}
                                 </figure>
                                 <div class="card-body p-4">
                                     <h4 class="card-title text-base">{{ item.name }}</h4>
@@ -107,13 +109,15 @@
                         {% for item in user.wishlist_items.all|slice:":6" %}
                             <div class="card bg-base-100 shadow-md">
                                 <figure>
-                                    {% if item.collectible.image %}
-                                        <img src="{{ item.collectible.image.url }}" alt="{{ item.collectible.name }}" class="h-48 w-full object-cover" />
-                                    {% else %}
-                                        <div class="h-48 w-full bg-gray-200 flex items-center justify-center">
-                                            <span class="text-gray-400">No Image</span>
-                                        </div>
-                                    {% endif %}
+                                    {% with primary=item.collectible.images.all|dictsortreversed:'is_primary'|first %}
+                                        {% if primary and primary.image %}
+                                            <img src="{{ primary.image.url }}" alt="{{ item.collectible.name }}" class="h-48 w-full object-cover" />
+                                        {% else %}
+                                            <div class="h-48 w-full bg-gray-200 flex items-center justify-center">
+                                                <span class="text-gray-400">No Image</span>
+                                            </div>
+                                        {% endif %}
+                                    {% endwith %}
                                 </figure>
                                 <div class="card-body p-4">
                                     <h4 class="card-title text-base">{{ item.collectible.name }}</h4>
