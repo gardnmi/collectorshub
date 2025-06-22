@@ -124,8 +124,9 @@
                                 <div class="card-body p-4">
                                     <h4 class="card-title text-base">{{ item.collectible.name }}</h4>
                                     <p class="text-primary font-bold">${{ item.collectible.price }}</p>
-                                    <div class="card-actions justify-end">
+                                    <div class="card-actions justify-between mt-2">
                                         <a href="{% url 'collectible_detail' item.collectible.pk %}" class="btn btn-sm btn-outline">View</a>
+                                        <a href="{% url 'a_messaging:conversation_by_item' item.collectible.pk %}" class="btn btn-warning btn-sm" style="background-color: #f69d0c; color: #fff;">Contact Seller</a>
                                     </div>
                                 </div>
                             </div>

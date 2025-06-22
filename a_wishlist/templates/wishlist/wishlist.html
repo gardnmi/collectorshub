@@ -33,15 +33,14 @@
                             </div>
                         {% endif %}
                         
-                        <div class="card-actions justify-between mt-4">
+                        <div class="card-actions flex flex-row justify-between items-center mt-4" id="wishlist-actions-{{ item.pk }}">
                             <a href="{% url 'collectible_detail' item.collectible.pk %}" class="btn btn-primary btn-sm">View Details</a>
-                            <button 
-                                class="btn btn-outline btn-sm btn-error"
-                                hx-post="{% url 'remove_from_wishlist' item.collectible.pk %}"
-                                hx-target="#wishlist-item-{{ item.pk }}"
-                                hx-swap="outerHTML">
-                                Remove
-                            </button>
+                            <div class="flex flex-row gap-2">
+                                <a href="{% url 'a_messaging:conversation_by_item' item.collectible.pk %}" class="btn btn-warning btn-sm" style="background-color: #f69d0c; color: #fff;">Contact Seller</a>
+                                <span id="wishlist-btn-{{ item.pk }}">
+                                    {% include "wishlist/partials/wishlist_button.html" with collectible=item.collectible in_wishlist=True %}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -60,3 +59,5 @@
     {% endif %}
 </div>
 {% endblock %}
+
+{% block toast %}{% endblock %}

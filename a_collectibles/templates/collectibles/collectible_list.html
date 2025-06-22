@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load in_wishlist %}
+
 {% block title %}All Collectibles{% endblock %}
 
 {% block content %}
@@ -56,8 +58,9 @@
                 <div class="badge badge-outline">{{ category.display_name }}</div>
             {% endfor %}
             </div>
-            <div class="card-actions justify-end mt-3">
-            <a href="{% url 'collectible_detail' collectible.id %}" class="btn btn-primary btn-sm">View Details</a>
+            <div class="card-actions justify-between mt-3">
+                <a href="{% url 'collectible_detail' collectible.id %}" class="btn btn-primary btn-sm">View Details</a>
+                {% include "wishlist/partials/wishlist_button.html" with collectible=collectible in_wishlist=collectible|in_wishlist:user %}
             </div>
         </div>
         </div>
@@ -68,3 +71,5 @@
     {% endfor %}
 </div>
 {% endblock %}
+
+{% block toast %}{% endblock %}
