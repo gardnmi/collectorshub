@@ -123,3 +123,10 @@
 
 - Removed the obsolete `is_offer` field from `MessageAdmin` in the Django admin.
 - Updated `list_display` and `list_filter` to use `offer_amount` and `is_read` for better admin usability and to resolve system check errors.
+
+## 2025-06-22 - Messaging Navbar Icon and Unread Badge
+
+- Replaced the "Messages" button in the navbar with a clear envelope/message icon for better recognition.
+- Added a "NEW" badge to the icon when there are unread messages for the user.
+- The unread badge now appears on every page with the navbar, not just the inbox, by passing `unread_count` to all relevant templates.
+- Improved backend logic to ensure unread message count is always accurate and up-to-date.
