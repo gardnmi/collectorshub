@@ -145,4 +145,10 @@
   - Use `convo_list` for rendering conversations.
   - Display a "NEW" badge with an icon (DaisyUI badge + SVG) next to any conversation with unread messages.
   - Ensure the UI is clear and modern, matching the rest of the app's DaisyUI/Tailwind style.
-- This makes it easy for users to spot new conversations and ensures the most relevant chats are always at the top of their inbox.
+  - This makes it easy for users to spot new conversations and ensures the most relevant chats are always at the top of their inbox.
+
+## 2025-06-22 - Messaging Conversation: Auto-Scroll to Latest Message
+
+- Added a JavaScript snippet to `messaging/templates/messaging/conversation_detail.html` that automatically scrolls the message list to the bottom when the page loads.
+- This ensures users always see the newest messages first and can scroll up to view older history, providing a modern chat experience.
+- No backend changes required; the update is purely in the template for a smoother user experience.

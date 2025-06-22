@@ -30,4 +30,13 @@
     </div>
     <a href="{% url 'messaging:inbox' %}" class="btn btn-outline">Back to Inbox</a>
 </div>
+<script>
+  // Auto-scroll to bottom of messages list on page load
+  window.addEventListener('DOMContentLoaded', function() {
+    var messagesList = document.getElementById('messages-list');
+    if (messagesList) {
+      messagesList.scrollTop = messagesList.scrollHeight;
+    }
+  });
+</script>
 {% endblock %}
