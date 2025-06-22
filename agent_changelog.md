@@ -201,3 +201,21 @@
 
 - Fixed wishlist count icon in the navbar to update instantly when adding or removing items from the wishlist page, using HTMX out-of-band (OOB) swaps.
 - Now, the wishlist count stays accurate and in sync across all pages, including when using the undo/add-back button on the wishlist page.
+
+## 2025-06-22 - Made Collectible Card Images Clickable
+
+- Made collectible card images on the collectibles list page clickable, linking to the collectible detail page. The image is now wrapped in an anchor tag pointing to the detail view, with hover and cursor-pointer styling for clear affordance.
+
+## 2025-06-22 - Clickable Preview Card Images Everywhere
+
+- Made collectible preview card images clickable everywhere they appear:
+  - Collectibles list page
+  - Wishlist page
+  - Profile page (both user's collectibles and wishlist tabs)
+- Images now link to the collectible detail page and have pointer/hover affordance for clarity.
+
+## 2025-06-22 - Back to List Button UX Fix
+
+- Reverted the "Back to List" button on the collectible detail page to a regular link (instead of using `window.history.back()`), ensuring it always returns to the collectibles list in one click.
+- This avoids confusion caused by modal carousel navigation adding history entries, which previously required multiple clicks to return to the list.
+- The button now provides a consistent and intuitive navigation experience for users.

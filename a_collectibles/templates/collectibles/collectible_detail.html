@@ -67,7 +67,7 @@
 </div>
 
 {# DaisyUI Modal Carousel with anchor navigation #}
-<dialog id="carousel-modal" class="modal">
+<dialog id="carousel-modal" class="modal" onclick="if(event.target === this){ this.close(); }">
   <div class="modal-box max-w-3xl">
     <div class="carousel w-full">
       {% for img in images %}
