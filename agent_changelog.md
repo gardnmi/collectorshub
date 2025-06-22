@@ -180,3 +180,19 @@
 - Updated all messaging-related links in templates (navbar, conversation, inbox, etc.) to use `a_messaging:` instead of `messaging:`.
 - Verified and fixed all dynamic and static imports for wishlist and messaging to use the new app names (e.g., `a_wishlist.models`).
 - Cleaned up category initialization logic and ensured sample data generation is robust for testing with large numbers of collectibles.
+
+## 2025-06-22 - Wishlist and Collectibles UI/UX Improvements
+
+- Collectibles list page:
+  - Added "Add to Wishlist" button to each card, using a custom template filter to show "Remove from Wishlist" if already in wishlist.
+  - Button state updates instantly with HTMX when adding/removing, without page reload.
+  - Disabled toast notifications on this page for a cleaner experience.
+- Wishlist page:
+  - Grouped "View Details", "Contact Seller", and "Remove" buttons in a single row for better appearance.
+  - Aligned "View Details" to the left, with "Contact Seller" and "Remove" on the right.
+  - When removing an item, the card stays and the button flips to "Add to Wishlist" (undo), rather than removing the card.
+  - Disabled toast notifications on this page as well.
+- Profile wishlist tab:
+  - Fixed button alignment and improved consistency with wishlist page.
+- Added a custom template filter (`in_wishlist`) in `a_collectibles/templatetags` to check if a collectible is in the user's wishlist.
+- Refactored `remove_from_wishlist` view to support button-only swaps for wishlist page, keeping cards visible.

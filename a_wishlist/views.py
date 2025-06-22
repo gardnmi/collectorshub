@@ -121,24 +121,16 @@ def remove_from_wishlist(request, pk):
 
         return response
 
-    # If it's an HTMX request from wishlist page, return empty response to remove the item
+    # If it's an HTMX request, always return the updated button
     if request.headers.get("HX-Request"):
-        # Render the messages
-        messages_html = render_to_string(
-            "partials/messages.html",
-            {"messages": messages.get_messages(request), "htmx": True},
+        # Render the wishlist button for the wishlist page (after removal)
+        button_html = render_to_string(
+            "wishlist/partials/wishlist_button.html",
+            {"collectible": collectible, "in_wishlist": False},
             request=request,
         )
-
-        # Render the wishlist count with OOB swap
-        count_html = render_to_string(
-            "partials/wishlist_count.html", {"htmx": True}, request=request
-        )
-
-        # Return an empty response for the primary target, but include OOB swaps
-        response = HttpResponse(messages_html + count_html)
-
-        return response
+        # Return a swap for the button only, not the whole card
+        return HttpResponse(button_html)
 
     # Otherwise redirect
     if "wishlist" in request.META.get("HTTP_REFERER", ""):

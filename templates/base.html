@@ -23,6 +23,7 @@
       {% endblock %}
     </div>
 
+    {% block toast %}
     {% if not request.resolver_match or request.resolver_match.url_name != 'conversation_detail' and request.resolver_match.url_name != 'conversation_by_item' %}
     <div id="htmx-messages" class="toast toast-end z-50">
         {% if messages %}
@@ -30,6 +31,7 @@
         {% endif %}
     </div>
     {% endif %}
+    {% endblock %}
 
     <script>
       // Auto-dismiss toasts after 4 seconds
