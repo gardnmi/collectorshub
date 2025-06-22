@@ -1,5 +1,12 @@
 # Agent Changelog
 
+## 2025-06-22 - Toast Notification Improvements
+
+- Fixed issue where toasts (Django messages) would stack up and persist on the conversation page.
+- Added auto-dismiss script to fade out and remove toasts after 4 seconds for a cleaner user experience.
+- Disabled toast notifications specifically on the conversation detail page to prevent message toasts from appearing for every chat message.
+- Toasts continue to work as expected on all other pages.
+
 ## 2025-06-21 - Fixed Wishlist Toast and Count Updates
 - Fixed wishlist count to update immediately using Out-Of-Band (OOB) swaps
 - Improved toast notification styling with proper DaisyUI components

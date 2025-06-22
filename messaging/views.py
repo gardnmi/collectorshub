@@ -28,8 +28,9 @@ def conversation_detail(request: HttpRequest, pk: int) -> HttpResponse:
             msg.sender = request.user
             msg.save()
             if request.headers.get('HX-Request'):
-                html = render_to_string('messaging/_messages_list.html', {'messages': conversation.messages.select_related('sender').order_by('created_at'), 'user': request.user})
-                return HttpResponse(html)
+                messages_html = render_to_string('messaging/_messages_list.html', {'messages': Message.objects.filter(conversation=conversation).select_related('sender').order_by('created_at'), 'user': request.user})
+                form_html = render_to_string('messaging/_message_form.html', {'form': MessageForm(), 'user': request.user, 'conversation': conversation})
+                return HttpResponse(messages_html + form_html)
             return redirect('messaging:conversation_detail', pk=pk)
     else:
         form = MessageForm()
