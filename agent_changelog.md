@@ -196,3 +196,8 @@
   - Fixed button alignment and improved consistency with wishlist page.
 - Added a custom template filter (`in_wishlist`) in `a_collectibles/templatetags` to check if a collectible is in the user's wishlist.
 - Refactored `remove_from_wishlist` view to support button-only swaps for wishlist page, keeping cards visible.
+
+## 2025-06-22 - Wishlist Navbar Count OOB Update
+
+- Fixed wishlist count icon in the navbar to update instantly when adding or removing items from the wishlist page, using HTMX out-of-band (OOB) swaps.
+- Now, the wishlist count stays accurate and in sync across all pages, including when using the undo/add-back button on the wishlist page.

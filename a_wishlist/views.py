@@ -129,8 +129,11 @@ def remove_from_wishlist(request, pk):
             {"collectible": collectible, "in_wishlist": False},
             request=request,
         )
-        # Return a swap for the button only, not the whole card
-        return HttpResponse(button_html)
+        count_html = render_to_string(
+            "partials/wishlist_count.html", {"htmx": True}, request=request
+        )
+        # Return both the button and the OOB wishlist count update
+        return HttpResponse(button_html + count_html)
 
     # Otherwise redirect
     if "wishlist" in request.META.get("HTTP_REFERER", ""):
