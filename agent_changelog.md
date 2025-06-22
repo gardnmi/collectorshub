@@ -99,6 +99,12 @@
 - Updated form rendering to use direct field output (no crispy forms), with Tailwind/DaisyUI classes.
 - All messaging templates now use correct Django template logic and are HTMX-ready for smooth chat experience.
 
+## 2025-06-22 - Messaging Character Limit
+
+- Added a 1000-character limit to messages in the messaging system.
+- Enforced the limit both in the form widget (`maxlength` attribute) and with server-side validation in `MessageForm`.
+- Users now receive a clear error if they attempt to send a message longer than 1000 characters.
+
 ## 2025-06-21 - Messaging UI/UX Improvements
 
 - Updated `MessageForm` to use a resizable textarea for the message input, improving usability for longer messages.
