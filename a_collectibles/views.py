@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from django.conf import settings
 
-from collectibles.forms import CollectibleForm
+from a_collectibles.forms import CollectibleForm
 
 from .models import Collectible, CollectibleImage
 
@@ -39,7 +39,7 @@ def collectible_detail(request, pk):
         ).exists()
 
     # Get the primary image (or first image if none marked primary)
-    images = collectible.images.all()
+    images = collectible.images.all() # type: ignore
     primary_image = images.filter(is_primary=True).first() or images.first()
 
     return render(
@@ -87,7 +87,7 @@ def collectible_create(request):
 @login_required
 def collectible_update(request, pk):
     collectible = get_object_or_404(Collectible, pk=pk, owner=request.user)
-    images = collectible.images.all()  # This is valid after model edit
+    images = collectible.images.all()  # type: ignore # This is valid after model edit
     if request.method == "POST":
         form = CollectibleForm(request.POST, request.FILES, instance=collectible)
         if form.is_valid():
@@ -177,7 +177,7 @@ def enhance_with_ai(request, pk):
             model = llm.get_model("gpt-4.1-nano")
 
             # Use the primary image for AI enhancement if available
-            primary_image = collectible.images.filter(is_primary=True).first()
+            primary_image = collectible.images.filter(is_primary=True).first() # type: ignore
             attachment_path = primary_image.image.path if primary_image else None
             llm_response = model.prompt(
                 prompt=prompt,

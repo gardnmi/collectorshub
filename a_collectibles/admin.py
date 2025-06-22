@@ -6,7 +6,7 @@ from django.contrib.auth.models import User, Group
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 from unfold.admin import ModelAdmin
 
-from collectibles.models import Collectible, Category
+from .models import Collectible, Category
 
 admin.site.unregister(User)
 admin.site.unregister(Group)

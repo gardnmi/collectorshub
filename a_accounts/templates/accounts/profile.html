@@ -15,9 +15,11 @@
                         </div>
                     </div>
                 {% else %}
-                    <div class="avatar placeholder">
-                        <div class="bg-neutral text-neutral-content rounded-full w-32">
-                            <span class="text-3xl">{{ user.username|make_list|first|upper }}</span>
+                    <div class="flex justify-center w-full">
+                        <div class="avatar placeholder">
+                            <div class="bg-neutral text-neutral-content rounded-full w-40 h-40 flex items-center justify-center">
+                                <span class="text-6xl">{{ user.username|make_list|first|upper }}</span>
+                            </div>
                         </div>
                     </div>
                 {% endif %}

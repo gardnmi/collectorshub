@@ -7,9 +7,9 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "collectorshub.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "a_core.settings")
     try:
-        # from django.collectorshub.management import execute_from_command_line
+        # from django.a_core.management import execute_from_command_line
         from django.core.management import execute_from_command_line
     except ImportError as exc:
         raise ImportError(

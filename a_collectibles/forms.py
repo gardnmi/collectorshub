@@ -1,5 +1,5 @@
 from django import forms
-from collectibles.models import Collectible, CollectibleImage
+from .models import Collectible, CollectibleImage
 from typing import Any
 
 
