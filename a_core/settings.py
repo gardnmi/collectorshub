@@ -13,7 +13,7 @@ OPENAI_API_KEY = config("OPENAI_API_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -158,7 +158,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "none"  # Can be 'mandatory', 'optional', or 'none'
 
 # 3rd Party Apps Settings
-DJANGO_VITE = {"default": {"dev_mode": True}}
+DJANGO_VITE = {"default": {"dev_mode": config("DJANGO_VITE_DEBUG_MODE", default=True, cast=bool)}}
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
