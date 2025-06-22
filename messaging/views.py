@@ -4,9 +4,6 @@ from django.http import HttpRequest, HttpResponse
 from .models import Conversation, Message
 from collectibles.models import Collectible
 from django.contrib.auth import get_user_model
-from django.db.models import Q
-from django.template.loader import render_to_string
-from django.http import JsonResponse
 from .forms import MessageForm
 
 User = get_user_model()
@@ -14,12 +11,14 @@ User = get_user_model()
 @login_required
 def inbox(request: HttpRequest) -> HttpResponse:
     conversations = request.user.conversations.order_by('-updated_at')
-    return render(request, 'messaging/inbox.html', {'conversations': conversations})
+    unread_count = Message.objects.filter(conversation__in=conversations, is_read=False).exclude(sender=request.user).count()
+    return render(request, 'messaging/inbox.html', {'conversations': conversations, 'unread_count': unread_count})
 
 @login_required
 def conversation_detail(request: HttpRequest, pk: int) -> HttpResponse:
     conversation = get_object_or_404(Conversation, pk=pk, participants=request.user)
-    messages = conversation.messages.select_related('sender').order_by('created_at')
+    messages = Message.objects.filter(conversation=conversation).select_related('sender').order_by('created_at')
+    Message.objects.filter(conversation=conversation, is_read=False).exclude(sender=request.user).update(is_read=True)
     if request.method == 'POST':
         form = MessageForm(request.POST, request.FILES)
         if form.is_valid():
@@ -27,10 +26,6 @@ def conversation_detail(request: HttpRequest, pk: int) -> HttpResponse:
             msg.conversation = conversation
             msg.sender = request.user
             msg.save()
-            if request.headers.get('HX-Request'):
-                messages_html = render_to_string('messaging/_messages_list.html', {'messages': Message.objects.filter(conversation=conversation).select_related('sender').order_by('created_at'), 'user': request.user})
-                form_html = render_to_string('messaging/_message_form.html', {'form': MessageForm(), 'user': request.user, 'conversation': conversation})
-                return HttpResponse(messages_html + form_html)
             return redirect('messaging:conversation_detail', pk=pk)
     else:
         form = MessageForm()

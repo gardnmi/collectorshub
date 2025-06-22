@@ -9,6 +9,6 @@ class ConversationAdmin(admin.ModelAdmin):
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'conversation', 'sender', 'created_at', 'is_offer', 'offer_amount')
+    list_display = ('id', 'conversation', 'sender', 'created_at', 'offer_amount', 'is_read')
     search_fields = ('conversation__id', 'sender__username', 'text')
-    list_filter = ('is_offer', 'created_at')
+    list_filter = ('is_read', 'created_at')
