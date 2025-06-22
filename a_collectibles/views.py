@@ -32,7 +32,7 @@ def collectible_detail(request, pk):
     if request.user.is_authenticated:
         # Using getattr to avoid import errors since this is a circular import
         WishlistItem = getattr(
-            __import__("wishlist.models", fromlist=["WishlistItem"]), "WishlistItem"
+            __import__("a_wishlist.models", fromlist=["WishlistItem"]), "WishlistItem"
         )
         in_wishlist = WishlistItem.objects.filter(
             user=request.user, collectible=collectible

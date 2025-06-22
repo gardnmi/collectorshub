@@ -43,7 +43,7 @@ class Collectible(models.Model):
         return self.name
 
     def primary_image(self):
-        return self.images.filter(is_primary=True).first() or self.images.first()
+        return self.images.filter(is_primary=True).first() or self.images.first() # type: ignore
 
     class Meta:
         ordering = ["-updated_at"]
@@ -62,30 +62,3 @@ class CollectibleImage(models.Model):
 
     class Meta:
         ordering = ["-is_primary", "uploaded_at"]
-
-
-# Add default categories when the database is initialized
-def initialize_default_categories():
-    default_categories = [
-        {"name": "antiques", "display_name": "Antiques"},
-        {"name": "books", "display_name": "Books"},
-        {"name": "electronics", "display_name": "Electronics"},
-        {"name": "furniture", "display_name": "Furniture"},
-        {"name": "clothing", "display_name": "Clothing"},
-        {"name": "toys", "display_name": "Toys"},
-        {"name": "art", "display_name": "Art"},
-        {"name": "sports", "display_name": "Sports Equipment"},
-        {"name": "tools", "display_name": "Tools"},
-        {"name": "miscellaneous", "display_name": "Miscellaneous"},
-    ]
-    for category in default_categories:
-        Category.objects.get_or_create(
-            name=category["name"], defaults={"display_name": category["display_name"]}
-        )
-
-
-# Hook into Django's post_migrate signal to initialize categories after migrations
-@receiver(post_migrate)
-def create_default_categories(sender, **kwargs):
-    if sender.name == "collectibles":
-        initialize_default_categories()
