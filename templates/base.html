@@ -23,11 +23,25 @@
       {% endblock %}
     </div>
 
+    {% if not request.resolver_match or request.resolver_match.url_name != 'conversation_detail' %}
     <div id="htmx-messages" class="toast toast-end z-50">
         {% if messages %}
             {% include "partials/messages.html" %}
         {% endif %}
     </div>
+    {% endif %}
+
+    <script>
+      // Auto-dismiss toasts after 4 seconds
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          document.querySelectorAll('#htmx-messages .alert').forEach(function(alert) {
+            alert.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(function() { alert.remove(); }, 500);
+          });
+        }, 4000);
+      });
+    </script>
 
     <footer class="footer footer-center p-4 bg-base-300 text-base-content mt-8">
         <aside>
