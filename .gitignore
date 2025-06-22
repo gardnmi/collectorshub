@@ -70,3 +70,6 @@ frontend/dist/
 # OS-generated files
 .DS_Store
 Thumbs.db
+
+# vite
+assets/

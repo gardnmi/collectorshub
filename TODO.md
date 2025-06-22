@@ -22,12 +22,13 @@ hyperscript: https://www.youtube.com/watch?v=4lItzpcZTk4
 
 # Actual TODOs
 - [ ] Add google user authentication with Django Allauth
+- [ ] Create a deployment process for Railway https://railway.com/
 - [x] Add security to views
 - [ ] Create a hero section
 - [x] Create a wishlist app
-- [ ] Create a chat app to negotiate trades
+- [x] Create a chat app to negotiate trades
 - [x] Add multiple item images feature
 - [ ] Add django-cleanup to remove unused media files https://pypi.org/project/django-cleanup/
-- [ ] Make toast disappear after a few seconds
+- [x] Make toast disappear after a few seconds
 - [ ] Add <script src="https://unpkg.com/hyperscript.org@0.9.14"></script> to vite instead of using the cdn (currently in collectible_list.html)
 - [ ] /messaging/ can have lots of conversation, need to paginate, search/filter, and delete conversations
