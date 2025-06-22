@@ -172,3 +172,11 @@
 - Cleaned up `a_collectibles/models.py` by removing the post-migrate signal and category initialization logic.
 - Fixed all dynamic imports and references to use the new app names (e.g., `a_wishlist.models`) throughout the codebase, including in `a_collectibles/views.py` and `a_accounts/views.py`.
 - The collectibles detail view and other related features now work correctly with the new app structure and dynamic import logic.
+
+## 2025-06-22 - Messaging Namespace and URL Refactor
+
+- Updated all Django template `{% url %}` tags and reverse lookups for the messaging app to use the new `a_messaging` namespace after the app folder rename.
+- Changed `app_name = "messaging"` to `app_name = "a_messaging"` in `a_messaging/urls.py` for correct namespacing.
+- Updated all messaging-related links in templates (navbar, conversation, inbox, etc.) to use `a_messaging:` instead of `messaging:`.
+- Verified and fixed all dynamic and static imports for wishlist and messaging to use the new app names (e.g., `a_wishlist.models`).
+- Cleaned up category initialization logic and ensured sample data generation is robust for testing with large numbers of collectibles.

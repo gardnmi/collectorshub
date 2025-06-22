@@ -5,7 +5,7 @@
     <h1 class="text-3xl font-bold mb-6">Messages</h1>
     <div class="grid gap-4">
         {% for c in convo_list %}
-            <a href="{% url 'messaging:conversation_detail' c.convo.pk %}" class="card bg-base-100 shadow hover:shadow-lg transition">
+            <a href="{% url 'a_messaging:conversation_detail' c.convo.pk %}" class="card bg-base-100 shadow hover:shadow-lg transition">
                 <div class="card-body flex flex-row items-center justify-between">
                     <div>
                         <div class="font-semibold flex items-center gap-2">

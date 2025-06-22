@@ -28,7 +28,7 @@
         </div>
         {% include "messaging/_message_form.html" with form=form user=user conversation=conversation %}
     </div>
-    <a href="{% url 'messaging:inbox' %}" class="btn btn-outline">Back to Inbox</a>
+    <a href="{% url 'a_messaging:inbox' %}" class="btn btn-outline">Back to Inbox</a>
 </div>
 <script>
   // Auto-scroll to bottom of messages list on page load
