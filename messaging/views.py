@@ -16,13 +16,33 @@ def get_unread_count(user):
 
 @login_required
 def inbox(request: HttpRequest) -> HttpResponse:
-    conversations = request.user.conversations.order_by('-updated_at')
+    conversations = Conversation.objects.filter(participants=request.user)
+    # Annotate each conversation with unread count for this user
+    convo_list = []
+    for convo in conversations:
+        unread = Message.objects.filter(conversation=convo, is_read=False).exclude(sender=request.user).exists()
+        last_msg = convo.messages.order_by('-created_at').first()
+        convo_list.append({
+            'convo': convo,
+            'unread': unread,
+            'last_updated': last_msg.created_at if last_msg else convo.updated_at,
+        })
+    # Sort: unread first, then by last updated
+    convo_list.sort(key=lambda c: (not c['unread'], -c['last_updated'].timestamp()))
     unread_count = get_unread_count(request.user)
-    return render(request, 'messaging/inbox.html', {'conversations': conversations, 'unread_count': unread_count})
+    return render(request, 'messaging/inbox.html', {'convo_list': convo_list, 'unread_count': unread_count})
 
 @login_required
-def conversation_detail(request: HttpRequest, pk: int) -> HttpResponse:
-    conversation = get_object_or_404(Conversation, pk=pk, participants=request.user)
+def conversation_detail(request: HttpRequest, pk: int = None, item_id: int = None) -> HttpResponse:
+    if item_id:
+        item = get_object_or_404(Collectible, pk=item_id)
+        seller = item.owner
+        # Get or create conversation for this item and these two users
+        conversation, created = Conversation.objects.get_or_create(item=item)
+        conversation.participants.add(request.user, seller)
+    else:
+        conversation = get_object_or_404(Conversation, pk=pk, participants=request.user)
+        item = conversation.item if conversation.item else None
     messages = Message.objects.filter(conversation=conversation).select_related('sender').order_by('created_at')
     Message.objects.filter(conversation=conversation, is_read=False).exclude(sender=request.user).update(is_read=True)
     unread_count = get_unread_count(request.user)
@@ -33,30 +53,7 @@ def conversation_detail(request: HttpRequest, pk: int) -> HttpResponse:
             msg.conversation = conversation
             msg.sender = request.user
             msg.save()
-            return redirect('messaging:conversation_detail', pk=pk)
+            return redirect('messaging:conversation_detail', pk=conversation.pk)
     else:
         form = MessageForm()
-    return render(request, 'messaging/conversation_detail.html', {'conversation': conversation, 'messages': messages, 'form': form, 'unread_count': unread_count})
-
-@login_required
-def start_conversation(request: HttpRequest, item_id: int = None) -> HttpResponse:
-    item = None
-    seller = None
-    if item_id:
-        item = get_object_or_404(Collectible, pk=item_id)
-        seller = item.owner
-    if request.method == 'POST':
-        if item and seller:
-            conversation, created = Conversation.objects.get_or_create(
-                item=item,
-            )
-            conversation.participants.add(request.user, seller)
-            return redirect('messaging:conversation_detail', pk=conversation.pk)
-        else:
-            other_user_id = request.POST.get('user_id')
-            other_user = get_object_or_404(User, pk=other_user_id)
-            conversation, created = Conversation.objects.get_or_create()
-            conversation.participants.add(request.user, other_user)
-            return redirect('messaging:conversation_detail', pk=conversation.pk)
-    unread_count = get_unread_count(request.user)
-    return render(request, 'messaging/start_conversation.html', {'item': item, 'seller': seller, 'unread_count': unread_count})
+    return render(request, 'messaging/conversation_detail.html', {'conversation': conversation, 'messages': messages, 'form': form, 'unread_count': unread_count, 'item': item})

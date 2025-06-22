@@ -57,7 +57,7 @@
                 <a href="{% url 'collectible_delete' collectible.pk %}" class="btn btn-error">Delete</a>
             {% elif user.is_authenticated %}
                 {% include "wishlist/partials/wishlist_button.html" with collectible=collectible in_wishlist=in_wishlist %}
-                <a href="{% url 'messaging:start_conversation' collectible.pk %}" class="btn" style="background-color: #f69d0c; color: #fff;">Contact Seller</a>
+                <a href="{% url 'messaging:conversation_by_item' collectible.pk %}" class="btn" style="background-color: #f69d0c; color: #fff;">Contact Seller</a>
                 <button class="btn btn-success" disabled>Purchase (Feature Coming Soon!)</button>
             {% else %}
                 <button class="btn btn-success" disabled>Purchase (Feature Coming Soon!)</button>
