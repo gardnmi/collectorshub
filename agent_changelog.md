@@ -111,3 +111,10 @@
 - Rearranged the conversation form in `conversation_detail.html` so the message box is on top, with file upload, offer checkbox, offer amount, and send button below for a cleaner layout.
 - Improved `_messages_list.html` to only render the sender's profile image if it exists, preventing broken or empty avatars and matching the actual profile model field (`profile_image`).
 - All changes follow TailwindCSS and DaisyUI conventions for consistent styling.
+
+## 2025-06-22 - Messaging Offer UI Simplification
+
+- Removed the "Offer?" checkbox from the message form; users now simply enter an amount in the offer field if they want to make an offer.
+- Changed the offer amount field's placeholder to "Make an Offer" for clarity.
+- Messages with an offer amount are now automatically highlighted as offers in the conversation UI.
+- Cleaned up template logic and removed unsupported template filters for compatibility.

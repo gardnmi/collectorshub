@@ -4,12 +4,11 @@ from .models import Message
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = ['text', 'attachment', 'is_offer', 'offer_amount']
+        fields = ['text', 'attachment', 'offer_amount']
         widgets = {
             'text': forms.Textarea(attrs={'class': 'textarea textarea-bordered w-full resize-y', 'placeholder': 'Type your message...', 'rows': 2, 'maxlength': 1000}),
             'attachment': forms.ClearableFileInput(attrs={'class': 'file-input file-input-bordered'}),
-            'is_offer': forms.CheckboxInput(attrs={'class': 'checkbox'}),
-            'offer_amount': forms.NumberInput(attrs={'class': 'input input-bordered', 'placeholder': 'Offer amount'}),
+            'offer_amount': forms.NumberInput(attrs={'class': 'input input-bordered', 'placeholder': 'Offer Amount', 'step': '0.01', 'min': '0'}),
         }
 
     def clean_text(self):

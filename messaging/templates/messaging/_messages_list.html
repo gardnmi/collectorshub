@@ -13,8 +13,8 @@
         {{ message.sender.username }}
         <time class="text-xs opacity-50 ml-2">{{ message.created_at|date:'SHORT_DATETIME_FORMAT' }}</time>
       </div>
-      <div class="chat-bubble {% if message.is_offer %}chat-bubble-primary{% endif %}">
-        {% if message.is_offer %}
+      <div class="chat-bubble{% if message.offer_amount %} chat-bubble-primary{% endif %}">
+        {% if message.offer_amount %}
           <span class="font-bold">Offer:</span> ${{ message.offer_amount }}<br>
         {% endif %}
         {{ message.text|linebreaksbr }}
