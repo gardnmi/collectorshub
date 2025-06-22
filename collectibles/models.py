@@ -42,6 +42,9 @@ class Collectible(models.Model):
     def __str__(self):
         return self.name
 
+    def primary_image(self):
+        return self.images.filter(is_primary=True).first() or self.images.first()
+
     class Meta:
         ordering = ["-updated_at"]
 

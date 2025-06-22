@@ -136,3 +136,13 @@
 - Added a custom context processor (`messaging.context_processors.unread_message_count`) to make `unread_count` available in all templates for authenticated users.
 - The "NEW" badge on the messages icon in the navbar now appears on every page, not just messaging-related views.
 - Ensured the unread message count is always accurate and globally accessible for a consistent user experience.
+
+## 2025-06-22 - Messaging Inbox: Unread Conversations at Top, Badge Icon
+
+- Updated the `inbox` view in `messaging/views.py` to annotate each conversation with unread status for the current user and sort conversations so unread ones appear at the top.
+- Refactored the context passed to the inbox template: now uses `convo_list` (with `convo`, `unread`, and `last_updated` for each conversation) instead of the old `conversations` queryset.
+- Updated `messaging/templates/messaging/inbox.html` to:
+  - Use `convo_list` for rendering conversations.
+  - Display a "NEW" badge with an icon (DaisyUI badge + SVG) next to any conversation with unread messages.
+  - Ensure the UI is clear and modern, matching the rest of the app's DaisyUI/Tailwind style.
+- This makes it easy for users to spot new conversations and ensures the most relevant chats are always at the top of their inbox.

@@ -4,20 +4,26 @@
 <div class="container mx-auto py-8">
     <h1 class="text-3xl font-bold mb-6">Messages</h1>
     <div class="grid gap-4">
-        {% for convo in conversations %}
-            <a href="{% url 'messaging:conversation_detail' convo.pk %}" class="card bg-base-100 shadow hover:shadow-lg transition">
+        {% for c in convo_list %}
+            <a href="{% url 'messaging:conversation_detail' c.convo.pk %}" class="card bg-base-100 shadow hover:shadow-lg transition">
                 <div class="card-body flex flex-row items-center justify-between">
                     <div>
-                        <div class="font-semibold">
-                            {% if convo.item %}
-                                {{ convo.item.name }}
+                        <div class="font-semibold flex items-center gap-2">
+                            {% if c.convo.item %}
+                                {{ c.convo.item.name }}
                             {% else %}
                                 General Conversation
                             {% endif %}
+                            {% if c.unread %}
+                                <span class="badge badge-primary badge-sm ml-2 flex items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" /></svg>
+                                    NEW
+                                </span>
+                            {% endif %}
                         </div>
-                        <div class="text-sm text-gray-500">Participants: {{ convo.participants.all|join:', ' }}</div>
+                        <div class="text-sm text-gray-500">Participants: {{ c.convo.participants.all|join:', ' }}</div>
                     </div>
-                    <div class="text-xs text-gray-400">Last updated: {{ convo.updated_at|date:'M d, Y H:i' }}</div>
+                    <div class="text-xs text-gray-400">Last updated: {{ c.last_updated|date:'M d, Y H:i' }}</div>
                 </div>
             </a>
         {% empty %}
