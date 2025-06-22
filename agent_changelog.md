@@ -130,3 +130,9 @@
 - Added a "NEW" badge to the icon when there are unread messages for the user.
 - The unread badge now appears on every page with the navbar, not just the inbox, by passing `unread_count` to all relevant templates.
 - Improved backend logic to ensure unread message count is always accurate and up-to-date.
+
+## 2025-06-22 - Global Unread Message Badge via Context Processor
+
+- Added a custom context processor (`messaging.context_processors.unread_message_count`) to make `unread_count` available in all templates for authenticated users.
+- The "NEW" badge on the messages icon in the navbar now appears on every page, not just messaging-related views.
+- Ensured the unread message count is always accurate and globally accessible for a consistent user experience.
