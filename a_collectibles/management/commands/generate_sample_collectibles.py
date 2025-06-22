@@ -1,7 +1,11 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
-from a_collectibles.models import Collectible, Category
+from a_collectibles.models import Collectible, Category, CollectibleImage
 import random
+import requests
+from django.core.files.base import ContentFile
+from a_collectibles.models import Collectible, CollectibleImage
+
 
 def ensure_default_categories():
     default_categories = [
@@ -22,6 +26,13 @@ def ensure_default_categories():
         )
 
 class Command(BaseCommand):
+    
+    # Delete any existing collectibles before generating new ones
+    def delete_existing_collectibles(self):
+        Collectible.objects.all().delete()
+        CollectibleImage.objects.all().delete()
+        self.stdout.write(self.style.SUCCESS("Deleted existing collectibles and images."))
+    
     help = "Generate 120+ sample collectibles for testing."
 
     def handle(self, *args, **options):
@@ -64,5 +75,20 @@ class Command(BaseCommand):
             )
             # Assign 1-3 random categories
             collectible.categories.set(random.sample(categories, k=random.randint(1, 3)))
+
+            # Add 1-5 random images from picsum.photos
+            num_images = random.randint(1, 5)
+            for img_idx in range(num_images):
+                try:
+                    resp = requests.get(f"https://picsum.photos/seed/{i}_{img_idx}/400/400", timeout=10)
+                    if resp.status_code == 200:
+                        image_file = ContentFile(resp.content, name=f"sample_{i+1}_{img_idx+1}.jpg")
+                        CollectibleImage.objects.create(
+                            collectible=collectible,
+                            image=image_file,
+                            is_primary=(img_idx == 0),
+                        )
+                except Exception as e:
+                    self.stdout.write(self.style.WARNING(f"Failed to fetch image for collectible {name}: {e}"))
             created += 1
         self.stdout.write(self.style.SUCCESS(f"Created {created} sample collectibles for user {user.username}."))
