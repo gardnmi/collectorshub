@@ -20,9 +20,9 @@ class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
     text = models.TextField(blank=True)
     attachment = models.FileField(upload_to='message_attachments/', blank=True, null=True)
-    is_offer = models.BooleanField(default=False)
     offer_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Message from {self.sender} in Conversation {self.conversation.pk}"

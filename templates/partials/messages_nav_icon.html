@@ -1,0 +1,8 @@
+<a href="{% url 'messaging:inbox' %}" class="btn btn-ghost btn-circle relative" aria-label="Messages">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m-2 8a9 9 0 100-18 9 9 0 000 18zm0 0v-2a4 4 0 014-4h4" />
+  </svg>
+  {% if unread_count and unread_count > 0 %}
+    <span class="badge badge-error badge-xs absolute -top-1 -right-1 animate-bounce">NEW</span>
+  {% endif %}
+</a>

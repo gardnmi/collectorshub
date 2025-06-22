@@ -118,3 +118,8 @@
 - Changed the offer amount field's placeholder to "Make an Offer" for clarity.
 - Messages with an offer amount are now automatically highlighted as offers in the conversation UI.
 - Cleaned up template logic and removed unsupported template filters for compatibility.
+
+## 2025-06-22 - Messaging Admin Cleanup
+
+- Removed the obsolete `is_offer` field from `MessageAdmin` in the Django admin.
+- Updated `list_display` and `list_filter` to use `offer_amount` and `is_read` for better admin usability and to resolve system check errors.
