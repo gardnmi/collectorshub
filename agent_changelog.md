@@ -164,3 +164,11 @@
 - Replaced the "Profile" button in the navbar with the user's profile image or a placeholder avatar, linking to the profile page.
 - Enhanced the default profile avatar: made it larger, perfectly centered, and visually consistent with the rest of the UI.
 - Adjusted the vertical alignment of the default profile avatar for better appearance.
+
+## 2025-06-22 - Sample Data Generation and Category Initialization Refactor
+
+- Added a management command `generate_sample_collectibles` to quickly generate 120+ sample collectibles for testing, with random names, prices, conditions, and categories (no images).
+- Moved the default category creation logic out of the models and into the management command, so running the command will always ensure categories exist before generating collectibles.
+- Cleaned up `a_collectibles/models.py` by removing the post-migrate signal and category initialization logic.
+- Fixed all dynamic imports and references to use the new app names (e.g., `a_wishlist.models`) throughout the codebase, including in `a_collectibles/views.py` and `a_accounts/views.py`.
+- The collectibles detail view and other related features now work correctly with the new app structure and dynamic import logic.
