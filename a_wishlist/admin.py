@@ -1,5 +1,5 @@
 from django.contrib import admin
-from wishlist.models import WishlistItem
+from .models import WishlistItem
 from unfold.admin import ModelAdmin
 
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from accounts.models import Profile
+from .models import Profile
 
 from unfold.admin import ModelAdmin
 

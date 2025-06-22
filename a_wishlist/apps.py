@@ -1,6 +1,7 @@
 from django.apps import AppConfig
 
 
-class MessagingConfig(AppConfig):
+class WishlistConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "messaging"
+    name = "a_wishlist"
+    verbose_name = "User Wishlists"

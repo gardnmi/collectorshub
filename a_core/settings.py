@@ -33,11 +33,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # My apps
-    "collectibles",
-    "accounts",
-    "wishlist",
-    "collectorshub",
-    "messaging",
+    "a_collectibles",
+    "a_accounts",
+    "a_wishlist",
+    "a_core",
+    "a_messaging",
     # 3rd Party apps
     "django_extensions",  # For additional management commands and features
     "django_cotton",
@@ -64,7 +64,7 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
 ]
 
-ROOT_URLCONF = "collectorshub.urls"
+ROOT_URLCONF = "a_core.urls"
 
 TEMPLATES = [
     {
@@ -78,7 +78,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 # `allauth` needs this from django
                 "django.template.context_processors.request",
-                "messaging.context_processors.unread_message_count",
+                "a_messaging.context_processors.unread_message_count",
             ],
         },
     },
@@ -92,7 +92,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
-WSGI_APPLICATION = "collectorshub.wsgi.application"
+WSGI_APPLICATION = "a_core.wsgi.application"
 
 
 # Database

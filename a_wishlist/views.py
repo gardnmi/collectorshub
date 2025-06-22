@@ -6,7 +6,7 @@ from django.views.decorators.http import require_POST
 from django.template.loader import render_to_string
 
 from .models import WishlistItem
-from collectibles.models import Collectible
+from a_collectibles.models import Collectible
 
 
 # Create your views here.

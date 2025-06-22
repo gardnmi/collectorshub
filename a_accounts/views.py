@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from accounts.models import Profile
-from accounts.forms import UserUpdateForm, ProfileUpdateForm
+from .models import Profile
+from .forms import UserUpdateForm, ProfileUpdateForm
 
 
 # Create your views here.
@@ -19,7 +19,7 @@ def profile(request):
 
     # Import WishlistItem model using getattr to avoid circular import issues
     WishlistItem = getattr(
-        __import__("wishlist.models", fromlist=["WishlistItem"]), "WishlistItem"
+        __import__("a_wishlist.models", fromlist=["WishlistItem"]), "WishlistItem"
     )
 
     # Get user's wishlist items (prefetch related collectibles for efficiency)

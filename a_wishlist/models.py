@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from collectibles.models import Collectible
+from a_collectibles.models import Collectible
 
 
 # Create your models here.

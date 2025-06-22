@@ -6,7 +6,21 @@
         {% include "partials/wishlist_count.html" %}
       </div>
       {% include "partials/messages_nav_icon.html" with unread_count=unread_count %}
-      <a href="{% url 'profile' %}" class="btn btn-ghost">Profile</a>
+      <a href="{% url 'profile' %}" class="btn btn-ghost p-0">
+        {% if user.profile.profile_image %}
+          <div class="avatar">
+            <div class="w-10 rounded-full">
+              <img src="{{ user.profile.profile_image.url }}" alt="Profile" />
+            </div>
+          </div>
+        {% else %}
+          <div class="avatar placeholder">
+            <div class="bg-neutral text-neutral-content rounded-full w-10">
+              <span class="text-lg">{{ user.username|make_list|first|upper }}</span>
+            </div>
+          </div>
+        {% endif %}
+      </a>
       <a href="{% url 'account_logout' %}" class="btn btn-outline">Logout</a>
     {% else %}
       <a href="{% url 'account_login' %}" class="btn btn-outline">Login</a>

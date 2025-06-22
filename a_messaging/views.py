@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpRequest, HttpResponse
 from .models import Conversation, Message
-from collectibles.models import Collectible
+from a_collectibles.models import Collectible
 from django.contrib.auth import get_user_model
 from .forms import MessageForm
 
@@ -31,7 +31,7 @@ def inbox(request: HttpRequest) -> HttpResponse:
             .exclude(sender=request.user)
             .exists()
         )
-        last_msg = convo.messages.order_by("-created_at").first()
+        last_msg = convo.messages.order_by("-created_at").first() # type: ignore
         convo_list.append(
             {
                 "convo": convo,
@@ -51,7 +51,7 @@ def inbox(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def conversation_detail(
-    request: HttpRequest, pk: int = None, item_id: int = None
+    request: HttpRequest, pk: int | None = None, item_id: int | None = None
 ) -> HttpResponse:
     if item_id:
         item = get_object_or_404(Collectible, pk=item_id)

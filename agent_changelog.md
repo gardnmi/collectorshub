@@ -152,3 +152,15 @@
 - Added a JavaScript snippet to `messaging/templates/messaging/conversation_detail.html` that automatically scrolls the message list to the bottom when the page loads.
 - This ensures users always see the newest messages first and can scroll up to view older history, providing a modern chat experience.
 - No backend changes required; the update is purely in the template for a smoother user experience.
+
+## 2025-06-22 - Major Project Structure Refactor and UI Improvements
+
+- Renamed all Django app folders to use the `a_` prefix (e.g., `accounts` → `a_accounts`, `collectibles` → `a_collectibles`, etc.) and main project to `a_core`.
+- Updated all references in `INSTALLED_APPS`, `ROOT_URLCONF`, `WSGI_APPLICATION`, and context processors in `a_core/settings.py` to use new app names.
+- Updated all import statements and dynamic imports in code to use new app names (e.g., `a_wishlist.models`).
+- Updated all `include()` references in `a_core/urls.py` to use new app names.
+- Fixed import and context processor errors for `a_messaging` and `a_wishlist`.
+- Improved the collectibles list page to display a visible title "All Collectibles" at the top.
+- Replaced the "Profile" button in the navbar with the user's profile image or a placeholder avatar, linking to the profile page.
+- Enhanced the default profile avatar: made it larger, perfectly centered, and visually consistent with the rest of the UI.
+- Adjusted the vertical alignment of the default profile avatar for better appearance.
