@@ -1,5 +1,5 @@
 from django import forms
-from .models import Collectible, CollectibleImage
+from .models import Collectible, CollectibleImage, Category
 from typing import Any
 
 
@@ -32,6 +32,17 @@ class CollectibleForm(forms.ModelForm):
         required=False,
         label="Add Images",
         help_text="You can upload multiple images.",
+    )
+    new_category = forms.CharField(
+        required=False,
+        label="Add New Category",
+        help_text="If your category doesn't exist, add it here.",
+        widget=forms.TextInput(
+            attrs={
+                "class": "input input-bordered w-full",
+                "placeholder": "New Category Name",
+            }
+        ),
     )
 
     class Meta:
@@ -69,8 +80,24 @@ class CollectibleForm(forms.ModelForm):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
+        self.fields["categories"].required = False
         # You can add more customization here if needed
-        # For example, if you want to add specific DaisyUI classes to certain fields
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_category = cleaned_data.get("new_category")
+        if new_category:
+            category, created = Category.objects.get_or_create(
+                name=new_category, defaults={"display_name": new_category}
+            )
+            # Add the new category to the categories field
+            if "categories" in self.cleaned_data:
+                self.cleaned_data["categories"] = list(
+                    self.cleaned_data["categories"]
+                ) + [category]
+            else:
+                self.cleaned_data["categories"] = [category]
+        return cleaned_data
 
 
 class CollectibleImageForm(forms.ModelForm):

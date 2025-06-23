@@ -154,8 +154,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Django AllAuth Settings
 LOGIN_REDIRECT_URL = "profile"
-ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_REQUIRED = True  # Deprecated, replaced below
 ACCOUNT_EMAIL_VERIFICATION = "none"  # Can be 'mandatory', 'optional', or 'none'
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 
 # 3rd Party Apps Settings
 DJANGO_VITE = {"default": {"dev_mode": config("DJANGO_VITE_DEBUG_MODE", default=True, cast=bool)}}
