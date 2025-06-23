@@ -33,3 +33,4 @@ hyperscript: https://www.youtube.com/watch?v=4lItzpcZTk4
 - [ ] Add <script src="https://unpkg.com/hyperscript.org@0.9.14"></script> to vite instead of using the cdn (currently in collectible_list.html)
 - [ ] /messaging/ can have lots of conversation, need to paginate, search/filter, and delete conversations
 - [ ] Move my collectibles out of profile into a navbar icon and goes to a personal collectibles page
+- [ ] hook up django-storage to host media files
