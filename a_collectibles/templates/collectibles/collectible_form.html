@@ -25,9 +25,9 @@
                     <input type="hidden" name="pk" value="{{ form.instance.pk }}">
                 {% endif %}
 
-                {# Render all fields except images #}
+                {# Render all fields except images and new_category #}
                 {% for field in form %}
-                    {% if field.name != 'images' %}
+                    {% if field.name != 'images' and field.name != 'new_category' %}
                     <div class="form-control mb-4">
                         <label class="label">
                             <span class="label-text">{{ field.label }}</span>
@@ -46,6 +46,24 @@
                     </div>
                     {% endif %}
                 {% endfor %}
+
+                {# Add new category field #}
+                <div class="form-control mb-4">
+                    <label class="label">
+                        <span class="label-text">{{ form.new_category.label }}</span>
+                    </label>
+                    {{ form.new_category }}
+                    {% if form.new_category.help_text %}
+                        <label class="label">
+                            <span class="label-text-alt text-gray-500">{{ form.new_category.help_text }}</span>
+                        </label>
+                    {% endif %}
+                    {% for error in form.new_category.errors %}
+                        <label class="label">
+                            <span class="label-text-alt text-error">{{ error }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
 
                 {# Styled file input for images #}
                 <div class="form-control mb-4">

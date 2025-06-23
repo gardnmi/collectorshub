@@ -34,3 +34,4 @@ hyperscript: https://www.youtube.com/watch?v=4lItzpcZTk4
 - [ ] /messaging/ can have lots of conversation, need to paginate, search/filter, and delete conversations
 - [ ] Move my collectibles out of profile into a navbar icon and goes to a personal collectibles page
 - [ ] hook up django-storage to host media files
+- [ ] Fix issue on seller side where wishlist offers don't show items on the chat page like they do on the buyer side

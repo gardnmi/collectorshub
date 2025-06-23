@@ -228,3 +228,9 @@
 - Reverted the "Back to List" button on the collectible detail page to a regular link (instead of using `window.history.back()`), ensuring it always returns to the collectibles list in one click.
 - This avoids confusion caused by modal carousel navigation adding history entries, which previously required multiple clicks to return to the list.
 - The button now provides a consistent and intuitive navigation experience for users.
+
+## 2025-06-23 - Collectible Category Improvements
+
+- Added a "Add New Category" field to the collectible create/update form. Users can now enter a new category name directly on the form; it will be created and added to the collectible automatically.
+- Made the categories field optional in the collectible form.
+- Updated the collectible detail page to display all categories as badges. If no categories are set, it shows "None".

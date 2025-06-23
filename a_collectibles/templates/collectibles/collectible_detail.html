@@ -38,6 +38,18 @@
         <p class="text-lg text-gray-700 mb-2">Description: <br>{{ collectible.description|default:"No description provided." }}</p>
         <p class="text-xl font-bold text-primary mb-2">Price: ${{ collectible.price }}</p>
         <p class="text-gray-600 mb-2">Condition: <span class="badge badge-accent badge-lg">{{ collectible.get_condition_display }}</span></p>
+        <p class="text-gray-600 mb-2">
+            Categories:
+            {% if collectible.categories.all %}
+                {% for category in collectible.categories.all %}
+                    <span class="badge badge-outline mr-1">{{ category.display_name }}</span>
+                {% empty %}
+                    <span class="text-gray-400">None</span>
+                {% endfor %}
+            {% else %}
+                <span class="text-gray-400">None</span>
+            {% endif %}
+        </p>
         <p class="text-sm text-gray-500 mb-4">Listed by: {{ collectible.owner.username }} on {{ collectible.created_at|date:"M d, Y" }}</p>
 
         <div class="card-actions justify-end mt-auto">
