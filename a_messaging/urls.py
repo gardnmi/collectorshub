@@ -13,4 +13,9 @@ urlpatterns = [
         views.conversation_detail,
         name="conversation_by_item",
     ),
+    path(
+        "conversation/wishlist/",
+        views.conversation_by_wishlist,
+        name="conversation_by_wishlist",
+    ),
 ]

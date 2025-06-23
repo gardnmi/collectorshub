@@ -14,12 +14,19 @@ class Conversation(models.Model):
         on_delete=models.CASCADE,
         related_name="conversations",
     )
+    collectibles = models.ManyToManyField(
+        Collectible,
+        blank=True,
+        related_name="multi_conversations"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         if self.item:
             return f"Conversation about {self.item.name} ({self.pk})"
+        elif self.collectibles.exists():
+            return f"Conversation about {self.collectibles.count()} items (#{self.pk})"
         return f"Conversation #{self.pk}"
 
 

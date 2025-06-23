@@ -1,5 +1,14 @@
 # Agent Changelog
 
+## 2025-06-23 - Wishlist, Offer, and Profile Cleanup
+
+- Removed the "My Wishlist" tab and all supporting backend code from the user profile page for a cleaner UX
+- Updated wishlist page: "Contact Seller" button now says "Make Offer" for each item
+- Added support for making offers on the entire wishlist, opening a conversation linked to all wishlist items
+- Conversations for wishlist offers now show all related collectibles and the total, using the same message form as single-item offers (no pre-filled text)
+- Refactored backend to remove all redundant wishlist context from the profile view
+- Fixed template errors and improved context passing for wishlist conversations
+
 ## 2025-06-22 - Toast Notification Improvements
 
 - Fixed issue where toasts (Django messages) would stack up and persist on the conversation page.

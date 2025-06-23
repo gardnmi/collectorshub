@@ -6,6 +6,8 @@ from django.views.decorators.http import require_POST
 from django.template.loader import render_to_string
 
 from .models import WishlistItem
+from .forms import WishlistOfferForm
+from .models import WishlistOffer
 from a_collectibles.models import Collectible
 
 
@@ -16,9 +18,10 @@ def wishlist(request):
     wishlist_items = WishlistItem.objects.filter(user=request.user).select_related(
         "collectible"
     )
-
+    wishlist_total = sum(item.collectible.price for item in wishlist_items)
     context = {
         "wishlist_items": wishlist_items,
+        "wishlist_total": wishlist_total,
     }
 
     return render(request, "wishlist/wishlist.html", context)
@@ -152,3 +155,29 @@ def get_wishlist_count(request):
 def update_wishlist_count(request):
     """Return the updated wishlist count for HTMX requests"""
     return render(request, "partials/wishlist_count.html")
+
+
+@login_required
+def wishlist_offer_create(request):
+    wishlist_items = WishlistItem.objects.filter(user=request.user).select_related("collectible")
+    if not wishlist_items:
+        messages.warning(request, "Your wishlist is empty.")
+        return redirect("wishlist")
+    total = sum(item.collectible.price for item in wishlist_items)
+    if request.method == "POST":
+        form = WishlistOfferForm(request.POST)
+        if form.is_valid():
+            offer = form.save(commit=False)
+            offer.user = request.user
+            offer.total_amount = total
+            offer.save()
+            offer.items.set([item.collectible for item in wishlist_items])
+            messages.success(request, "Your offer for the entire wishlist has been submitted!")
+            return redirect("wishlist")
+    else:
+        form = WishlistOfferForm()
+    return render(request, "wishlist/wishlist_offer_form.html", {
+        "form": form,
+        "wishlist_items": wishlist_items,
+        "wishlist_total": total,
+    })
