@@ -7,4 +7,5 @@ urlpatterns = [
     path("remove/<int:pk>/", views.remove_from_wishlist, name="remove_from_wishlist"),
     path("count/", views.get_wishlist_count, name="wishlist_count"),
     path("update-count/", views.update_wishlist_count, name="update_wishlist_count"),
+    path('offer/', views.wishlist_offer_create, name='wishlist_offer_create'),
 ]

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Make Offer on Entire Wishlist{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+    <h1 class="text-2xl font-bold mb-4">Make Offer on Entire Wishlist</h1>
+    <div class="mb-4">
+        <div class="text-lg font-semibold">Total: <span class="text-primary">${{ wishlist_total|floatformat:2 }}</span></div>
+    </div>
+    <div class="mb-6">
+        <h2 class="font-semibold mb-2">Items in your wishlist:</h2>
+        <ul class="list-disc list-inside">
+            {% for item in wishlist_items %}
+                <li>{{ item.collectible.name }} <span class="text-gray-500">(${ {item.collectible.price}|floatformat:2 })</span></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success" style="background-color: #05966a; color: #fff;">Submit Offer</button>
+        <a href="{% url 'wishlist' %}" class="btn btn-outline ml-2">Cancel</a>
+    </form>
+</div>
+{% endblock %}
