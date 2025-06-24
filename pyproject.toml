@@ -5,13 +5,16 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "cryptography>=45.0.4",
     "dj-database-url>=3.0.0",
     "django>=5.2.3",
     "django-allauth-ui>=1.8.1",
     "django-allauth[socialaccount]>=65.9.0",
+    "django-cleanup>=9.0.0",
     "django-cotton>=2.1.2",
     "django-extensions>=4.1",
     "django-htmx>=1.23.0",
+    "django-storages[s3]>=1.14.6",
     "django-unfold>=0.60.0",
     "django-vite>=3.1.0",
     "django-widget-tweaks>=1.5.0",

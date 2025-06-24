@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "widget_tweaks",
     "slippers",
     "django.contrib.humanize",  # For human-friendly template filters
+    "django_cleanup.apps.CleanupConfig", # Should be last in INSTALLED_APPS 
 ]
 
 MIDDLEWARE = [
@@ -161,13 +162,22 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"  # Directory where static files will be collected
 
-# # Whitenoise: forever-cacheable static files and compression
-# STORAGES = {
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#     },
-# }
-
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": config("AWS_ACCESS_KEY_ID"),
+            "secret_key": config("AWS_SECRET_ACCESS_KEY"),
+            "bucket_name": config("AWS_STORAGE_BUCKET_NAME"),
+            "custom_domain": config("AWS_S3_CUSTOM_DOMAIN"),
+            "cloudfront_key_id": config("AWS_CLOUDFRONT_KEY_ID"),
+            "cloudfront_key": config("AWS_CLOUDFRONT_KEY", cast=str).replace("\\n", "\n").encode("ascii").strip(), # type: ignore
+            }
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },  
+}
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
