@@ -11,6 +11,12 @@
                         <div class="font-semibold flex items-center gap-2">
                             {% if c.convo.item %}
                                 {{ c.convo.item.name }}
+                            {% elif c.convo.collectibles.all %}
+                                Wishlist Offer
+                                <span class="badge badge-outline badge-sm ml-2">{{ c.convo.collectibles.count }} items</span>
+                                <span class="tooltip tooltip-bottom ml-1" data-tip="{% for col in c.convo.collectibles.all|slice:':5' %}{{ col.name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% if c.convo.collectibles.count > 5 %}, ...{% endif %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><text x="12" y="16" text-anchor="middle" font-size="12" fill="currentColor">i</text></svg>
+                                </span>
                             {% else %}
                                 General Conversation
                             {% endif %}
