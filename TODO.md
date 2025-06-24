@@ -20,6 +20,8 @@ interactive_search_demo: https://www.youtube.com/watch?v=4lItzpcZTk4&list=PL-2EB
 
 hyperscript: https://www.youtube.com/watch?v=4lItzpcZTk4
 
+s3 image hosting: https://www.youtube.com/watch?v=RsiXzwesNLQ
+
 # Actual TODOs
 - [ ] Add google user authentication with Django Allauth
 - [ ] Create a deployment process for Railway https://railway.com/
