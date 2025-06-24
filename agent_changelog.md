@@ -252,3 +252,10 @@
 - Updated `collectible_list.html` to display a prominent "Yours" badge (with icon) in the card actions area for collectibles owned by the current user.
 - The ownership badge now appears exactly where the wishlist button would be, making ownership visually clear and consistent.
 - The "Add to Wishlist" button is now hidden for collectibles owned by the user.
+
+## 2025-06-24 - Production Static Files and Whitenoise Setup
+
+- Added Whitenoise middleware to `MIDDLEWARE` for efficient static file serving in production.
+- Configured `STORAGES` to use `whitenoise.storage.CompressedManifestStaticFilesStorage` for forever-cacheable, compressed static files.
+- Updated `STATICFILES_DIRS` to include both `assets` and `static` directories for proper static file collection.
+- Provided deployment guidance for Railway, including static file handling and best practices.

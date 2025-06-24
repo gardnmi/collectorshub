@@ -64,6 +64,8 @@ MIDDLEWARE = [
     # 3rd Party apps
     "django_htmx.middleware.HtmxMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",    
 ]
 
 ROOT_URLCONF = "a_core.urls"
@@ -157,6 +159,13 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"  # Directory where static files will be collected
+
+# Whitenoise: forever-cacheable static files and compression
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
