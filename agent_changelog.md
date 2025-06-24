@@ -1,5 +1,11 @@
 # Agent Changelog
 
+## 2025-06-24 - Dark Mode Toggle Improvements
+
+- Added a dark mode toggle switch to the navbar using DaisyUI's swap/rotate and persisted the user's theme choice with localStorage.
+- Updated the toggle to use a classic outlined sun for light mode and a filled crescent moon for dark mode, based on user feedback for better clarity and aesthetics.
+- Ensured all changes were limited to `nav.html` to avoid breaking other templates.
+
 ## 2025-06-23 - Wishlist, Offer, and Profile Cleanup
 
 - Removed the "My Wishlist" tab and all supporting backend code from the user profile page for a cleaner UX
