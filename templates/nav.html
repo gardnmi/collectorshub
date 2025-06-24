@@ -1,6 +1,15 @@
 <div class="navbar bg-base-100 shadow-sm">
   <a href="/collectibles" class="btn btn-ghost text-xl">Collectibles Hub</a>
   <div class="ml-auto flex items-center gap-2">
+    <!-- Dark mode toggle -->
+    <label class="swap swap-rotate mr-2">
+      <input id="theme-toggle" type="checkbox" />
+      <!-- Moon icon for dark mode -->
+      <svg class="swap-on fill-current w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 0 1 11.21 3a1 1 0 0 0-1.21 1.21A7 7 0 1 0 19.79 13a1 1 0 0 0 1.21-1.21Z"/></svg>
+      <!-- Sun icon for light mode -->
+      <svg class="swap-off fill-current w-7 h-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/><path stroke="currentColor" stroke-width="2" d="M12 1v2m0 18v2m11-11h-2M3 12H1m16.95 7.07-1.41-1.41M6.34 6.34 4.93 4.93m12.02 0-1.41 1.41M6.34 17.66l-1.41 1.41" fill="none"/></svg>
+    </label>
+    <!-- End dark mode toggle -->
     {% if user.is_authenticated %}
       <div id="wishlist-count-container">
         {% include "partials/wishlist_count.html" %}
@@ -28,3 +37,26 @@
     {% endif %}
   </div>
 </div>
+
+<script>
+  // Theme toggle script
+  const themeToggle = document.getElementById('theme-toggle');
+  themeToggle.addEventListener('change', () => {
+    if (themeToggle.checked) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+    }
+  });
+
+  // Load theme from localStorage
+  const currentTheme = localStorage.getItem('theme');
+  if (currentTheme) {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    if (currentTheme === 'dark') {
+      themeToggle.checked = true;
+    }
+  }
+</script>
