@@ -15,8 +15,9 @@ OPENAI_API_KEY = config("OPENAI_API_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
+CSRF_TRUSTED_ORIGINS = [f"https://{config('HOST')}"]
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", config("HOST")]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
