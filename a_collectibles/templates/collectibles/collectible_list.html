@@ -62,7 +62,16 @@
             </div>
             <div class="card-actions justify-between mt-3">
                 <a href="{% url 'collectible_detail' collectible.id %}" class="btn btn-primary btn-sm">View Details</a>
-                {% include "wishlist/partials/wishlist_button.html" with collectible=collectible in_wishlist=collectible|in_wishlist:user %}
+                {% if collectible.owner != user %}
+                  {% include "wishlist/partials/wishlist_button.html" with collectible=collectible in_wishlist=collectible|in_wishlist:user %}
+                {% else %}
+                  <span title="You own this collectible" class="ml-2 align-middle">
+                    <span class="badge badge-primary badge-lg flex items-center gap-1 px-3 py-1 text-base">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="inline h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a4 4 0 100 8 4 4 0 000-8zm-7 16a7 7 0 1114 0H3z"/></svg>
+                      <span class="font-semibold">Yours</span>
+                    </span>
+                  </span>
+                {% endif %}
             </div>
         </div>
         </div>
