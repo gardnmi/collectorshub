@@ -35,7 +35,7 @@
     </figure>
     <div class="card-body lg:w-1/2">
         <h2 class="card-title text-4xl mb-4">{{ collectible.name }}</h2>
-        <p class="text-lg text-gray-700 mb-2">Description: <br>{{ collectible.description|default:"No description provided." }}</p>
+        <p class="text-lg text-base-content mb-2">Description: <br>{{ collectible.description|default:"No description provided." }}</p>
         <p class="text-xl font-bold text-primary mb-2">Price: ${{ collectible.price|intcomma }}</p>
         <p class="text-gray-600 mb-2">Condition: <span class="badge badge-accent badge-lg">{{ collectible.get_condition_display }}</span></p>
         <p class="text-gray-600 mb-2">
