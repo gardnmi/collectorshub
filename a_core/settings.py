@@ -180,7 +180,7 @@ ACCOUNT_EMAIL_VERIFICATION = "none"  # Can be 'mandatory', 'optional', or 'none'
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 
 # 3rd Party Apps Settings
-DJANGO_VITE = {"default": {"dev_mode": config(DEBUG, default=True, cast=bool)}}
+DJANGO_VITE = {"default": {"dev_mode": DEBUG}}
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
