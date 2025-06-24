@@ -240,3 +240,9 @@
 - Added a "Add New Category" field to the collectible create/update form. Users can now enter a new category name directly on the form; it will be created and added to the collectible automatically.
 - Made the categories field optional in the collectible form.
 - Updated the collectible detail page to display all categories as badges. If no categories are set, it shows "None".
+
+## 2025-06-24 - Wishlist Offer Conversation Improvements
+
+- Updated the messaging inbox so that conversations created from a wishlist offer now display as "Wishlist Offer" with a badge showing the number of items and a tooltip preview of up to 5 item names, instead of the generic "General Conversation" label.
+- When viewing a wishlist offer conversation, the item summary (with images, names, and total) is always shown at the top, matching the initial offer view, even when accessed from the inbox.
+- These changes keep the UI clean and informative, even for large wishlists, and provide a consistent experience for wishlist-based conversations.

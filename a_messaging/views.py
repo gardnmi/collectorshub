@@ -64,6 +64,9 @@ def conversation_detail(
     else:
         conversation = get_object_or_404(Conversation, pk=pk, participants=request.user)
         item = conversation.item if conversation.item else None
+    # Wishlist offer support
+    collectibles = conversation.collectibles.all() if conversation.collectibles.exists() else None
+    collectibles_total = sum(c.price for c in collectibles) if collectibles else None
     messages = (
         Message.objects.filter(conversation=conversation)
         .select_related("sender")
@@ -92,6 +95,8 @@ def conversation_detail(
             "form": form,
             "unread_count": unread_count,
             "item": item,
+            "collectibles": collectibles,
+            "collectibles_total": collectibles_total,
         },
     )
 
