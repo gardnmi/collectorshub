@@ -1,18 +1,25 @@
 {% extends "base.html" %}
 
 {% load account %}
+{% load static %}
 
 {% block content %}
 
-<div class="hero bg-base-200 min-h-screen">
-  <div class="hero-content text-center">
-    <div class="max-w-md">
-      <h1 class="text-4xl font-bold">Hello there {% user_display user %} </h1> <h2 class="text-2xl">Welcome to our site!</h2>
-      <p class="py-6">
-        Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-        quasi. In deleniti eaque aut repudiandae et a id nisi.
+<div class="hero min-h-screen bg-gradient-to-br from-primary/10 via-base-200 to-secondary/10">
+  <div class="hero-content flex-col lg:flex-row-reverse gap-12">
+    <img src="{% static 'img/undraw_game-day_m63l.svg' %}" class="max-w-xs md:max-w-md rounded-2xl shadow-2xl border-4 border-primary/20 bg-white/60 hidden md:block" alt="CollectorsHub Hero" />
+    <div class="text-center lg:text-left max-w-lg">
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-4 text-primary drop-shadow-lg">
+        Welcome{% if user.is_authenticated %}, {% user_display user %}{% endif %}!
+      </h1>
+      <h2 class="text-2xl md:text-3xl font-semibold mb-4 text-secondary">Your Collection, Your Community</h2>
+      <p class="py-4 text-lg text-base-content/80">
+        Discover, showcase, and trade unique collectibles with passionate collectors from around the world. Start building your digital showcase or find your next treasure today!
       </p>
-      <button class="btn btn-primary">Get Started</button>
+      <div class="flex flex-col md:flex-row gap-4 mt-6 justify-center lg:justify-start">
+        <a href="{% url 'collectible_list' %}" class="btn btn-primary btn-lg shadow-md">Browse Collectibles</a>
+        <a href="{% url 'collectible_create' %}" class="btn btn-outline btn-secondary btn-lg">Add Your First Item</a>
+      </div>
     </div>
   </div>
 </div>
