@@ -181,9 +181,11 @@ def enhance_with_ai(request, pk):
 
             model = llm.get_model("gpt-4.1-nano")
 
-            # Collect all image paths for attachments
+            # Use all image URLs for AI enhancement (S3/CloudFront)
             image_qs = collectible.images.all()  # type: ignore
-            attachment_paths = [img.image.path for img in image_qs if hasattr(img.image, "path")]
+            attachment_urls = [img.image.url for img in image_qs if hasattr(img.image, "url")]
+
+            # print(f"Using attachment URLs: {attachment_paths}")
 
             llm_response = model.prompt(
                 prompt=prompt,
@@ -196,7 +198,7 @@ def enhance_with_ai(request, pk):
                     "title": "CollectibleItem",
                     "type": "object",
                 },
-                attachments=[llm.Attachment(path=path) for path in attachment_paths] if attachment_paths else [],
+                attachments=[llm.Attachment(url=url) for url in attachment_urls] if attachment_urls else [],
                 key=OPENAI_API_KEY,
             ).json()
 
