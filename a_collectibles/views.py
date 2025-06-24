@@ -156,29 +156,35 @@ def enhance_with_ai(request, pk):
             }
         else:
             # Here you would call the LLM service with a prompt
-            prompt = """
+            prompt = f"""
                 You are an expert e-commerce copywriter and market analyst specializing in collectible items.
                 Your task is to improve a collectible listing's name and description for an eBay-like marketplace.
 
                 Focus on making the description more engaging, detailed, professional, and appealing to potential buyers.
-                Highlight key features and benefits, and use clear, concise language.
+                Highlight key features and benefits, and use clear, concise language.  Try to inccorpate the existing description
+                if it is contextually relevant.
+
+                Here is the current name and description of the collectible:
+                Name: {collectible.name}
+                Description: {collectible.description}
 
                 Please return the improved name, description, and a suggested price in JSON format with the keys 'name' and 'description'
 
-                I will also provide an image of the collectible to help you improve the name and description.
+                I will also provide images of the collectible to help you improve the name and description.
 
                 Example format:
-                {
+                {{
                     "name": "Improved Name Here",
-                    "description": "Improved, detailed description here.",
-                }
+                    "description": "Improved, detailed description here."
+                }}
                 """
 
             model = llm.get_model("gpt-4.1-nano")
 
-            # Use the primary image for AI enhancement if available
-            primary_image = collectible.images.filter(is_primary=True).first() # type: ignore
-            attachment_path = primary_image.image.path if primary_image else None
+            # Collect all image paths for attachments
+            image_qs = collectible.images.all()  # type: ignore
+            attachment_paths = [img.image.path for img in image_qs if hasattr(img.image, "path")]
+
             llm_response = model.prompt(
                 prompt=prompt,
                 schema={
@@ -190,9 +196,7 @@ def enhance_with_ai(request, pk):
                     "title": "CollectibleItem",
                     "type": "object",
                 },
-                attachments=[llm.Attachment(path=attachment_path)]
-                if attachment_path
-                else [],
+                attachments=[llm.Attachment(path=path) for path in attachment_paths] if attachment_paths else [],
                 key=OPENAI_API_KEY,
             ).json()
 
@@ -266,4 +270,5 @@ def save_enhanced(request, pk):
             request,
             f"An error occurred while saving the enhanced collectible: {str(e)}",
         )
+        return redirect("collectible_detail", pk=pk)
         return redirect("collectible_detail", pk=pk)
