@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "widget_tweaks",
     "slippers",
+    "django.contrib.humanize",  # For human-friendly template filters
 ]
 
 MIDDLEWARE = [

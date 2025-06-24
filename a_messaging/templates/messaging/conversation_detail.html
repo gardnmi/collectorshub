@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load humanize %}
+
 {% block title %}Conversation{% endblock %}
 {% block content %}
 <div class="container mx-auto py-8">
@@ -18,13 +20,13 @@
                 {% endwith %}
                 <div>
                     <span class="font-semibold">{{ c.name }}</span>
-                    <span class="text-primary ml-2">${{ c.price }}</span>
+                    <span class="text-primary ml-2">${{ c.price|intcomma }}</span>
                 </div>
             </li>
             {% endfor %}
         </ul>
         <div class="mt-2 text-right font-bold text-lg">
-            Total: <span class="text-primary">${{ collectibles_total|floatformat:2 }}</span>
+            Total: <span class="text-primary">${{ collectibles_total|intcomma }}</span>
         </div>
     </div>
     {% elif item %}

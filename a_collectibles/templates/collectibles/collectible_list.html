@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load humanize %}
 {% load in_wishlist %}
 
 {% block title %}All Collectibles{% endblock %}
@@ -50,7 +50,7 @@
                 <div class="badge badge-secondary">SOLD</div>
             {% endif %}
             </h2>
-            <p class="text-xl font-bold">${{ collectible.price }}</p>
+            <p class="text-xl font-bold">${{ collectible.price|intcomma }}</p>
             <p class="text-sm">Condition: {{ collectible.get_condition_display }}</p>
             {% if collectible.description %}
             <p class="line-clamp-2">{{ collectible.description }}</p>

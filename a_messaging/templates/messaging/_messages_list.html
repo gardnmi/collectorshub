@@ -1,4 +1,5 @@
 {# messaging/_messages_list.html - Partial for rendering messages in a conversation #}
+{% load humanize %}
 <ul class="space-y-2">
   {% for message in messages %}
     <li class="chat {% if message.sender == user %}chat-end{% else %}chat-start{% endif %}">
@@ -15,7 +16,7 @@
       </div>
       <div class="chat-bubble{% if message.offer_amount %} chat-bubble-primary{% endif %}">
         {% if message.offer_amount %}
-          <span class="font-bold">Offer:</span> ${{ message.offer_amount }}<br>
+          <span class="font-bold">Offer:</span> ${{ message.offer_amount|intcomma }}<br>
         {% endif %}
         {{ message.text|linebreaksbr }}
         {% if message.attachment %}
