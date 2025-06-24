@@ -13,7 +13,8 @@
 			"extensions": [
 				"charliermarsh.ruff",
 				"batisteo.vscode-django",
-				"junstyle.vscode-django-support"
+				"junstyle.vscode-django-support",
+				"antfu.browse-lite"
 			],
 			"settings": {
 				"editor.defaultFormatter": "charliermarsh.ruff",
