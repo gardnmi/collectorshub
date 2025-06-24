@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "dj-database-url>=3.0.0",
     "django>=5.2.3",
     "django-allauth-ui>=1.8.1",
     "django-allauth[socialaccount]>=65.9.0",
@@ -17,6 +18,7 @@ dependencies = [
     "llm>=0.26",
     "openai>=1.88.0",
     "pillow>=11.2.1",
+    "psycopg>=3.2.9",
     "python-decouple>=3.8",
     "requests>=2.32.4",
     "slippers>=0.6.2",
