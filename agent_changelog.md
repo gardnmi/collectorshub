@@ -259,3 +259,12 @@
 - Configured `STORAGES` to use `whitenoise.storage.CompressedManifestStaticFilesStorage` for forever-cacheable, compressed static files.
 - Updated `STATICFILES_DIRS` to include both `assets` and `static` directories for proper static file collection.
 - Provided deployment guidance for Railway, including static file handling and best practices.
+
+## 2025-06-24 - AI Enhancement, Error Handling, and Template Cleanup
+
+- Fixed AI enhancement error handling: now uses HX-Redirect for HTMX requests to force a full page reload and prevent duplicate navbars or nested templates after errors.
+- Error toasts now always show after AI enhancement errors, regardless of request type.
+- Updated collectible detail template to use `text-base-content` for better dark mode support.
+- Cleaned up unused partial: removed contents of `templates/partials/error_message.html` (no longer referenced anywhere).
+- Ensured all image attachments for AI enhancement use S3/CloudFront URLs.
+- General code and template cleanup for robust HTMX and Django messages integration.

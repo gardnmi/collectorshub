@@ -3,6 +3,7 @@ import json
 import llm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from django.conf import settings
@@ -185,7 +186,10 @@ def enhance_with_ai(request, pk):
             image_qs = collectible.images.all()  # type: ignore
             attachment_urls = [img.image.url for img in image_qs if hasattr(img.image, "url")]
 
-            # print(f"Using attachment URLs: {attachment_paths}")
+            # print(f"Using attachment URLs: {attachment_urls}")
+
+            # mock error
+            # raise ValueError("Mock error for testing AI enhancement")
 
             llm_response = model.prompt(
                 prompt=prompt,
@@ -244,6 +248,10 @@ def enhance_with_ai(request, pk):
     except Exception as e:
         print(f"AI Enhancement Error: {e}")
         messages.error(request, f"An error occurred during AI enhancement: {str(e)}")
+        if request.headers.get("Hx-Request") == "true":
+            response = HttpResponse(status=204)
+            response["HX-Redirect"] = redirect("collectible_detail", pk=pk).url
+            return response
         return redirect("collectible_detail", pk=pk)
 
 
@@ -272,5 +280,4 @@ def save_enhanced(request, pk):
             request,
             f"An error occurred while saving the enhanced collectible: {str(e)}",
         )
-        return redirect("collectible_detail", pk=pk)
         return redirect("collectible_detail", pk=pk)
