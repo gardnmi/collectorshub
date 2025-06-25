@@ -1,5 +1,12 @@
 # Agent Changelog
 
+## 2025-06-25 - Client-side Image Compression for Collectibles
+
+- Installed `browser-image-compression` via npm and imported it in `static/js/main.js`.
+- Implemented client-side image compression for all forms with an input named `images`.
+- Images larger than 2MB are automatically compressed in the browser before upload, greatly speeding up uploads and reducing server/S3 load.
+- No backend changes required; works transparently for all collectible image uploads and updates.
+
 ## 2025-06-24 - Dark Mode Toggle Improvements
 
 - Added a dark mode toggle switch to the navbar using DaisyUI's swap/rotate and persisted the user's theme choice with localStorage.
