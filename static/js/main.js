@@ -26,6 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.submitter && e.submitter.name && e.submitter.name.startsWith('delete_image_')) {
         return; // allow default submit for delete
       }
+      // Show spinner on the submit button
+      let submitBtn = e.submitter || form.querySelector('button[type="submit"],input[type="submit"]');
+      let originalBtnContent;
+      if (submitBtn) {
+        originalBtnContent = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="loading loading-spinner loading-sm"></span> Processing...';
+      }
       e.preventDefault(); // Always prevent default for uploads
       if (form._submitting) {
         console.log('Form already submitting, skipping duplicate submit.');
@@ -92,7 +100,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
       // Always submit the form after processing
-      setTimeout(() => form.submit(), 0);
+      setTimeout(() => {
+        // Do NOT restore the button content here; keep spinner/Processing until page reload
+        form.submit();
+      }, 0);
     });
   });
 });
